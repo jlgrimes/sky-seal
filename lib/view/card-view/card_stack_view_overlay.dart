@@ -46,12 +46,14 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
             GestureDetector(
                 onTap: () {
                   widget.controller.reverse();
-                  Navigator.pop(context);
+                  Future.delayed(Duration(milliseconds: 300), () {
+                    Navigator.pop(context);
+                  });
                 },
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                   child: Container(
-                    color: Colors.black.withOpacity(0.7),
+                    color: Colors.black.withOpacity(0),
                   ),
                 )),
             Positioned(

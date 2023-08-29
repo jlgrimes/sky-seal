@@ -76,9 +76,9 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
           await Navigator.push(
               context,
               PageRouteBuilder(
-                  transitionDuration: Duration(milliseconds: 100),
+                  transitionDuration: Duration(milliseconds: 2000),
                   pageBuilder: (context, animation, secondaryAnimation) {
-                    animation = Tween(begin: 0.0, end: 1.0).animate(animation);
+                    animation = Tween(begin: 1.0, end: 1.0).animate(animation);
                     controller.forward();
                     return FadeTransition(
                         opacity: animation,
