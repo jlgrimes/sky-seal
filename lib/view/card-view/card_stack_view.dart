@@ -14,46 +14,48 @@ class CardStackView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      (Expanded(
-          child: Column(
-        children: [
-          // ClipRect(
-          //   child: BackdropFilter(
-          //     filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-          //     child: Container(
-          //       width: 200.0,
-          //       height: 200.0,
-          //       decoration:
-          //           BoxDecoration(color: Colors.grey.shade200.withOpacity(0.5)),
-          //       child: Center(
-          //         child: Text('Frosted',
-          //             style: Theme.of(context).textTheme.displayLarge),
-          //       ),
-          //     ),
-          //   ),
-          // ),
-          Flexible(
-            child: Swiper(
-              layout: SwiperLayout.CUSTOM,
-              customLayoutOption:
-                  CustomLayoutOption(startIndex: -1, stateCount: 3)
-                    ..addTranslate([
-                      Offset(-370.0, 0.0),
-                      Offset(0.0, 0.0),
-                      Offset(370.0, 0.0)
-                    ]),
-              itemWidth: 300.0,
-              itemHeight: 400.0,
-              itemCount: 3,
-              itemBuilder: (context, index) {
-                return CardWithActionView(openContainerAction, cards[index]);
-              },
-              loop: false,
-            ),
-          )
-        ],
-      )))
-    ]);
+    return Container(
+      child: Column(children: [
+        (Expanded(
+            child: Column(
+          children: [
+            // ClipRect(
+            //   child: BackdropFilter(
+            //     filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+            //     child: Container(
+            //       width: 200.0,
+            //       height: 200.0,
+            //       decoration:
+            //           BoxDecoration(color: Colors.grey.shade200.withOpacity(0.5)),
+            //       child: Center(
+            //         child: Text('Frosted',
+            //             style: Theme.of(context).textTheme.displayLarge),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            Flexible(
+              child: Swiper(
+                layout: SwiperLayout.CUSTOM,
+                customLayoutOption:
+                    CustomLayoutOption(startIndex: -1, stateCount: 3)
+                      ..addTranslate([
+                        Offset(-370.0, 0.0),
+                        Offset(0.0, 0.0),
+                        Offset(370.0, 0.0)
+                      ]),
+                itemWidth: 300.0,
+                itemHeight: 400.0,
+                itemCount: 3,
+                itemBuilder: (context, index) {
+                  return CardWithActionView(openContainerAction, cards[index]);
+                },
+                loop: false,
+              ),
+            )
+          ],
+        )))
+      ]),
+    );
   }
 }
