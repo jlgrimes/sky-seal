@@ -5,6 +5,6 @@ class CardView extends StatelessWidget {
   Widget build(BuildContext context) {
     String imageUrl = 'https://images.pokemontcg.io/swsh12/139_hires.png';
 
-    return Container(child: Image.network(imageUrl));
+    return Image.network(imageUrl);
   }
 }

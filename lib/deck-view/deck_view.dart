@@ -6,8 +6,11 @@ class DeckView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
         child: GridView(
-      gridDelegate:
-          const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          mainAxisSpacing: 8,
+          crossAxisSpacing: 8,
+          childAspectRatio: 0.716),
       padding: const EdgeInsets.all(16.0),
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
