@@ -56,13 +56,6 @@ class CardStackViewOverlay extends StatelessWidget {
                         alignment: Alignment.center,
                         child: child),
                   );
-
-                  return Transform.scale(
-                    scale: value * scaleValue,
-                    alignment: Alignment.center,
-                    child: Transform.translate(
-                        offset: Offset(xTranslate, yTranslate), child: child),
-                  );
                 },
                 tween: Tween(begin: 0.0, end: 1.0),
                 child: Container(
