@@ -1,8 +1,8 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:sky_seal/view/primatives/card_view.dart';
 import 'package:sky_seal/view/primatives/constants.dart';
-import '../primatives/card_with_action_view.dart';
 import 'dart:ui';
 
 class CardStackView extends StatelessWidget {
@@ -50,7 +50,7 @@ class CardStackView extends StatelessWidget {
                 itemHeight: 500.0,
                 itemCount: 3,
                 itemBuilder: (context, index) {
-                  return CardWithActionView(openContainerAction, cards[index]);
+                  return CardView(cards[index]);
                 },
                 loop: false,
               ),

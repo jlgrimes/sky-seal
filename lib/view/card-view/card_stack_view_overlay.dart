@@ -20,15 +20,12 @@ class CardStackViewOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    final maxMenuWidth = size.width * 0.70;
-    final menuHeight = size.height * 0.35;
-    final leftOffset = (childOffset.dx + maxMenuWidth) < size.width
-        ? childOffset.dx
-        : (childOffset.dx - maxMenuWidth + childSize.width);
-    final topOffset =
-        (childOffset.dy + menuHeight + childSize.height) < size.height
-            ? childOffset.dy + childSize.height
-            : childOffset.dy - menuHeight;
+    final double scaleValue = 2.5;
+    final double xTranslate =
+        (size.width / 2) - childOffset.dx - childSize.width / 2;
+    final double yTranslate =
+        (size.height / 2) - childOffset.dy - childSize.height / 2;
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
@@ -46,21 +43,31 @@ class CardStackViewOverlay extends StatelessWidget {
                   ),
                 )),
             Positioned(
-              top: topOffset,
-              left: leftOffset,
+              top: childOffset.dy,
+              left: childOffset.dx,
               child: TweenAnimationBuilder(
+                curve: Curves.easeOutBack,
                 duration: Duration(milliseconds: 200),
                 builder: (BuildContext context, value, Widget? child) {
+                  return Transform.translate(
+                    offset: Offset(xTranslate, yTranslate),
+                    child: Transform.scale(
+                        scale: value * scaleValue,
+                        alignment: Alignment.center,
+                        child: child),
+                  );
+
                   return Transform.scale(
-                    scale: value,
+                    scale: value * scaleValue,
                     alignment: Alignment.center,
-                    child: child,
+                    child: Transform.translate(
+                        offset: Offset(xTranslate, yTranslate), child: child),
                   );
                 },
                 tween: Tween(begin: 0.0, end: 1.0),
                 child: Container(
-                  width: maxMenuWidth,
-                  height: menuHeight,
+                  width: childSize.width,
+                  height: childSize.height,
                   decoration: BoxDecoration(
                       color: Colors.grey.shade200,
                       borderRadius:
@@ -78,15 +85,6 @@ class CardStackViewOverlay extends StatelessWidget {
                 ),
               ),
             ),
-            Positioned(
-                top: childOffset.dy,
-                left: childOffset.dx,
-                child: AbsorbPointer(
-                    absorbing: true,
-                    child: Container(
-                        width: childSize.width,
-                        height: childSize.height,
-                        child: child))),
           ],
         ),
       ),
