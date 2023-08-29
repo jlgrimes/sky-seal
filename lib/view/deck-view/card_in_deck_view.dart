@@ -10,10 +10,14 @@ class CardInDeckview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OpenContainer(closedBuilder: (context, action) {
-      return CardWithActionView(action, code);
-    }, openBuilder: (context, action) {
-      return CardStackView(action);
-    });
+    return OpenContainer(
+      closedBuilder: (context, action) {
+        return CardWithActionView(action, code);
+      },
+      openBuilder: (context, action) {
+        return CardStackView(action);
+      },
+      transitionType: ContainerTransitionType.fadeThrough,
+    );
   }
 }
