@@ -1,3 +1,4 @@
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter/material.dart';
 import '../primatives/card_with_action_view.dart';
@@ -8,7 +9,7 @@ class CardStackView extends StatelessWidget {
   late List<CardWithActionView> cards;
 
   CardStackView(Function() this.openContainerAction, {super.key}) {
-    this.cards = [
+    cards = [
       CardWithActionView(openContainerAction),
       CardWithActionView(openContainerAction),
       CardWithActionView(openContainerAction),
@@ -37,14 +38,22 @@ class CardStackView extends StatelessWidget {
           //   ),
           // ),
           Flexible(
-            child: CardSwiper(
-              cardsCount: cards.length,
-              cardBuilder:
-                  (context, index, percentThresholdX, percentThresholdY) =>
-                      cards[index],
-              allowedSwipeDirection:
-                  AllowedSwipeDirection.only(left: true, right: true),
-              maxAngle: 0,
+            child: Swiper(
+              layout: SwiperLayout.CUSTOM,
+              customLayoutOption:
+                  CustomLayoutOption(startIndex: -1, stateCount: 3)
+                    ..addTranslate([
+                      Offset(-370.0, 0.0),
+                      Offset(0.0, 0.0),
+                      Offset(370.0, 0.0)
+                    ]),
+              itemWidth: 300.0,
+              itemHeight: 400.0,
+              itemCount: 3,
+              itemBuilder: (context, index) {
+                return CardWithActionView(openContainerAction);
+              },
+              loop: false,
             ),
           )
         ],
