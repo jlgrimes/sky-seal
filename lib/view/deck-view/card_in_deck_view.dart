@@ -48,10 +48,10 @@ class _CardInDeckViewState extends State<CardInDeckview> {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      width: _isCollapsed ? 160 * aspectRatio : 380 * aspectRatio,
+      width:
+          _isCollapsed ? 160 * aspectRatio : MediaQuery.of(context).size.width,
       height: _isCollapsed ? 160 : 380,
       duration: Duration(milliseconds: 500),
-      alignment: _isCollapsed ? Alignment.bottomCenter : Alignment.bottomLeft,
       curve: _isCollapsed ? Curves.easeOutCubic : Curves.easeOutBack,
       child: _isCollapsed
           ? CardWithActionView(_toggleIsCollapsed, code)
