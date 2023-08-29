@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sky_seal/deck-view/card_in_deck_view.dart';
-import 'package:sky_seal/primatives/card_view.dart';
+import 'package:sky_seal/primatives/card_with_action_view.dart';
 
 class DeckView extends StatelessWidget {
   void Function() openContainerAction;
@@ -16,7 +15,7 @@ class DeckView extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      children: [CardInDeckView(openContainerAction)],
+      children: [CardWithActionView(openContainerAction)],
     ));
   }
 }

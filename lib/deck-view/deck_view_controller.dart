@@ -12,7 +12,7 @@ class DeckViewController extends StatelessWidget {
           return DeckView(action);
         },
         openBuilder: (context, action) {
-          return CardStackView();
+          return CardStackView(action);
         });
   }
 }
