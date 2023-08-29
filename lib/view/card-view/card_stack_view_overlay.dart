@@ -60,24 +60,24 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
                 child: AnimatedBuilder(
                   animation: widget.controller,
                   builder: ((context, _) {
-                    return Transform.scale(
-                        scale: widget.scaleAnimation.value,
-                        child: Transform.translate(
-                            offset: Offset(widget.translateAnimation.value.dx,
-                                widget.translateAnimation.value.dy),
-                            child: Container(
-                                width: widget.childSize.width,
-                                height: widget.childSize.height,
-                                decoration: BoxDecoration(
-                                    color: Colors.grey.shade200,
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(5.0)),
-                                    boxShadow: [
-                                      const BoxShadow(
-                                          color: Colors.black38,
-                                          blurRadius: 10,
-                                          spreadRadius: 1)
-                                    ]),
+                    return Transform.translate(
+                        offset: Offset(widget.translateAnimation.value.dx,
+                            widget.translateAnimation.value.dy),
+                        child: Container(
+                            width: widget.childSize.width,
+                            height: widget.childSize.height,
+                            decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(5.0)),
+                                boxShadow: [
+                                  const BoxShadow(
+                                      color: Colors.black38,
+                                      blurRadius: 10,
+                                      spreadRadius: 1)
+                                ]),
+                            child: Transform.scale(
+                                scale: widget.scaleAnimation.value,
                                 child: ClipRRect(
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(5.0)),

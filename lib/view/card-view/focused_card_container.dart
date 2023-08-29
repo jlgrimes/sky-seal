@@ -43,20 +43,13 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
       childSize = size;
     });
 
-    double scale = 1.3;
+    double scale = 2;
 
     scaleTween = Tween(begin: 1, end: scale);
     Size windowSize = MediaQuery.of(context).size;
 
-    double initialArea = size.height * size.width;
-    double finalArea = initialArea * scale;
-    double finalHeight = sqrt(finalArea / cardAspectRatio);
-    double finalWidth = finalHeight * cardAspectRatio;
-
-    final double xTranslate =
-        (windowSize.width / 2) - finalWidth / 2 - (finalWidth - size.width);
-    final double yTranslate =
-        (windowSize.height / 2) - finalHeight / 2 - (finalHeight - size.height);
+    final double xTranslate = (windowSize.width / 2) - size.width / 2;
+    final double yTranslate = (windowSize.height / 2) - size.height / 2;
 
     Offset startingOffset = Offset(offset.dx, offset.dy);
     Offset finalOffset = Offset(xTranslate, yTranslate);
