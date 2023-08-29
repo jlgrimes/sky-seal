@@ -5,10 +5,11 @@ import 'package:sky_seal/view/primatives/card_view.dart';
 import 'package:sky_seal/view/primatives/constants.dart';
 
 class CardStackView extends StatelessWidget {
+  late Function(String code) setCurrentlyViewingCard;
   late String startingCode;
   List<String> cards = myDeckList;
 
-  CardStackView(this.startingCode) {
+  CardStackView(this.startingCode, this.setCurrentlyViewingCard) {
     // This should not happen help
     if (!cards.contains(startingCode)) return;
     int startingCodeIdx = cards.indexOf(startingCode);

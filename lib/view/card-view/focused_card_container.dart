@@ -1,14 +1,15 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:sky_seal/view/card-view/card_stack_view.dart';
 import 'package:sky_seal/view/card-view/card_stack_view_overlay.dart';
+import 'package:sky_seal/view/primatives/card_view.dart';
 import 'package:sky_seal/view/primatives/constants.dart';
 
 class FocusedCardContainer extends StatefulWidget {
-  final Widget child, menuContent;
+  final String code;
 
-  const FocusedCardContainer(
-      {Key? key, required this.child, required this.menuContent});
+  const FocusedCardContainer({Key? key, required this.code});
 
   @override
   _FocusedMenuHolderState createState() => _FocusedMenuHolderState();
@@ -25,6 +26,8 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
   GlobalKey containerKey = GlobalKey();
   Offset childOffset = Offset(0, 0);
   Size? childSize;
+
+  String? _currentlyViewingCard;
 
   void initState() {
     super.initState();
@@ -61,6 +64,12 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
         .drive(scaleTween.chain(CurveTween(curve: Curves.easeOutBack)));
   }
 
+  setCurrentlyViewingCard(String code) {
+    setState(() {
+      _currentlyViewingCard = code;
+    });
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -83,8 +92,9 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
                     return FadeTransition(
                         opacity: animation,
                         child: CardStackViewOverlay(
-                          menuContent: widget.menuContent,
-                          child: widget.child,
+                          menuContent: CardStackView(
+                              widget.code, setCurrentlyViewingCard),
+                          child: CardView(widget.code),
                           childOffset: childOffset,
                           childSize: childSize!,
                           controller: controller,
@@ -95,6 +105,6 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
                   fullscreenDialog: true,
                   opaque: false));
         },
-        child: widget.child);
+        child: CardView(widget.code));
   }
 }
