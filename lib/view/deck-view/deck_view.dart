@@ -4,25 +4,29 @@ import 'package:sky_seal/view/deck-view/card_in_deck_view.dart';
 class DeckView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CardInDeckview('swsh12-139');
-    return Expanded(
-        child: GridView(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          mainAxisSpacing: 8,
-          crossAxisSpacing: 8,
-          childAspectRatio: 0.716),
-      padding: const EdgeInsets.all(16.0),
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
+    return Stack(children: [CardInDeckview('swsh12-139')]);
+
+    return Column(
       children: [
-        CardInDeckview('swsh12-139'),
-        CardInDeckview('swsh12-139'),
-        CardInDeckview('swsh12-139'),
-        CardInDeckview('swsh12-139'),
-        CardInDeckview('swsh12-139'),
-        CardInDeckview('swsh12-139'),
+        GridView(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
+              childAspectRatio: 0.716),
+          padding: const EdgeInsets.all(16.0),
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          children: [
+            CardInDeckview('swsh12-139'),
+            CardInDeckview('swsh12-139'),
+            CardInDeckview('swsh12-139'),
+            CardInDeckview('swsh12-139'),
+            CardInDeckview('swsh12-139'),
+            CardInDeckview('swsh12-139'),
+          ],
+        )
       ],
-    ));
+    );
   }
 }
