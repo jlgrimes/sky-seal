@@ -29,8 +29,8 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
   void initState() {
     super.initState();
 
-    controller =
-        AnimationController(duration: const Duration(seconds: 1), vsync: this);
+    controller = AnimationController(
+        duration: const Duration(milliseconds: 400), vsync: this);
   }
 
   getOffsetAndDeclareAnimations(BuildContext context) {
@@ -55,8 +55,10 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
     Offset finalOffset = Offset(xTranslate, yTranslate);
     translateTween = Tween(begin: startingOffset, end: finalOffset);
 
-    translateAnimation = controller.drive(translateTween);
-    scaleAnimation = controller.drive(scaleTween);
+    translateAnimation = controller
+        .drive(translateTween.chain(CurveTween(curve: Curves.easeOutBack)));
+    scaleAnimation = controller
+        .drive(scaleTween.chain(CurveTween(curve: Curves.easeOutBack)));
   }
 
   @override
@@ -77,6 +79,7 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
                   transitionDuration: Duration(milliseconds: 100),
                   pageBuilder: (context, animation, secondaryAnimation) {
                     animation = Tween(begin: 0.0, end: 1.0).animate(animation);
+                    controller.forward();
                     return FadeTransition(
                         opacity: animation,
                         child: CardStackViewOverlay(
@@ -91,7 +94,6 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
                   },
                   fullscreenDialog: true,
                   opaque: false));
-          controller.forward();
         },
         child: widget.child);
   }

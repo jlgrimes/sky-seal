@@ -45,7 +45,7 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
           children: <Widget>[
             GestureDetector(
                 onTap: () {
-                  widget.controller.reset();
+                  widget.controller.reverse();
                   Navigator.pop(context);
                 },
                 child: BackdropFilter(
