@@ -1,13 +1,22 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:sky_seal/util/deck.dart';
 import 'package:sky_seal/view/primatives/card_view.dart';
 import 'package:sky_seal/view/primatives/constants.dart';
 
 class CardStackView extends StatelessWidget {
-  late List<String> cards;
+  late String startingCode;
+  List<String> cards = myDeckList;
 
-  CardStackView({super.key}) {
-    cards = ['swsh12-139', 'swsh12-140', 'swsh12-141'];
+  CardStackView(this.startingCode) {
+    // This should not happen help
+    if (!cards.contains(startingCode)) return;
+    int startingCodeIdx = cards.indexOf(startingCode);
+
+    cards = [
+      ...cards.sublist(startingCodeIdx),
+      ...cards.sublist(0, startingCodeIdx)
+    ];
   }
 
   @override
