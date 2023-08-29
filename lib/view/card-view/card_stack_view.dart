@@ -10,7 +10,7 @@ class CardStackView extends StatelessWidget {
   late List<String> cards;
 
   CardStackView(Function() this.openContainerAction, {super.key}) {
-    cards = ['swsh12-140', 'swsh12-140', 'swsh12-140'];
+    cards = ['swsh12-139', 'swsh12-140', 'swsh12-141'];
   }
 
   @override
