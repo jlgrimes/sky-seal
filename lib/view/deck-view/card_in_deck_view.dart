@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:indexed/indexed.dart';
 import 'package:sky_seal/view/card-view/card_stack_view.dart';
 import 'package:sky_seal/view/card-view/focused_card_container.dart';
-import 'package:sky_seal/view/primatives/card_with_action_view.dart';
+import 'package:sky_seal/view/primatives/card_view.dart';
 import 'package:sky_seal/view/primatives/constants.dart';
 
 class CardInDeckview extends StatefulWidget {
@@ -39,8 +39,7 @@ class _CardInDeckViewState extends State<CardInDeckview> {
   @override
   Widget build(BuildContext context) {
     return FocusedCardContainer(
-        child: CardWithActionView(_toggleIsCollapsed, code),
-        menuContent: CardStackView(_toggleIsCollapsed));
+        child: CardView(code), menuContent: CardStackView(_toggleIsCollapsed));
 
     return Indexed(
         index: _isCollapsed ? 0 : 1,
@@ -55,7 +54,7 @@ class _CardInDeckViewState extends State<CardInDeckview> {
             duration: Duration(milliseconds: 500),
             curve: _isCollapsed ? Curves.easeOutCubic : Curves.easeOutBack,
             child: _isCollapsed
-                ? CardWithActionView(_toggleIsCollapsed, code)
+                ? CardView(code)
                 : CardStackView(_toggleIsCollapsed),
           ))
         ]));

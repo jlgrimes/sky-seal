@@ -31,7 +31,7 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer> {
   Widget build(BuildContext context) {
     return GestureDetector(
         key: containerKey,
-        onLongPress: () async {
+        onTap: () async {
           getOffset();
           await Navigator.push(
               context,
