@@ -7,45 +7,26 @@ class CardStackViewOverlay extends StatefulWidget {
   final Size childSize;
   final Widget menuContent;
   final Widget child;
+  final AnimationController controller;
+  final Animation<double> scaleAnimation;
+  final Animation<Offset> translateAnimation;
 
-  CardStackViewOverlay({
-    Key? key,
-    required this.menuContent,
-    required this.childOffset,
-    required this.childSize,
-    required this.child,
-  }) : super(key: key);
+  CardStackViewOverlay(
+      {Key? key,
+      required this.menuContent,
+      required this.childOffset,
+      required this.childSize,
+      required this.child,
+      required this.controller,
+      required this.scaleAnimation,
+      required this.translateAnimation})
+      : super(key: key);
 
   @override
   State<CardStackViewOverlay> createState() => _CardStackViewOverlayState();
 }
 
-class _CardStackViewOverlayState extends State<CardStackViewOverlay>
-    with SingleTickerProviderStateMixin {
-  late AnimationController controller;
-  late Tween<Alignment> alignmentTween; // <<< Tween for first animation
-  late Tween<double> rotateTween; // <<< Tween for second animation
-  late Animation<Alignment> alignmentAnimation; // <<< first animation
-  late Animation<double> rotateAnimation; // <<< second animation
-
-  void initState() {
-    super.initState();
-
-    controller =
-        AnimationController(duration: const Duration(seconds: 3), vsync: this);
-    alignmentTween = Tween(
-        begin: Alignment.topCenter,
-        end: Alignment
-            .bottomCenter); // <<< define start and end value of alignment animation
-    rotateTween = Tween(
-        begin: 0,
-        end: 8 * 3.14); // <<< define start and end value of rotation animation
-    alignmentAnimation =
-        controller.drive(alignmentTween); // <<< create align animation
-    rotateAnimation =
-        controller.drive(rotateTween); // <<< create rotation animation
-  }
-
+class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -64,6 +45,7 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay>
           children: <Widget>[
             GestureDetector(
                 onTap: () {
+                  widget.controller.reset();
                   Navigator.pop(context);
                 },
                 child: BackdropFilter(
@@ -73,41 +55,68 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay>
                   ),
                 )),
             Positioned(
-              top: widget.childOffset.dy,
-              left: widget.childOffset.dx,
-              child: TweenAnimationBuilder(
-                curve: Curves.easeOutBack,
-                duration: const Duration(milliseconds: 200),
-                builder: (BuildContext context, value, Widget? child) {
-                  return Transform.translate(
-                    offset: Offset(xTranslate, yTranslate),
-                    child: Transform.scale(
-                        scale: value * scaleValue,
-                        alignment: Alignment.center,
-                        child: child),
-                  );
-                },
-                tween: Tween(begin: 0.0, end: 1.0),
-                child: Container(
-                  width: widget.childSize.width,
-                  height: widget.childSize.height,
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(5.0)),
-                      boxShadow: [
-                        const BoxShadow(
-                            color: Colors.black38,
-                            blurRadius: 10,
-                            spreadRadius: 1)
-                      ]),
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                    child: widget.menuContent,
-                  ),
+                top: 0,
+                left: 0,
+                child: AnimatedBuilder(
+                  animation: widget.controller,
+                  builder: ((context, _) {
+                    return Transform.scale(
+                        scale: widget.scaleAnimation.value,
+                        child: Transform.translate(
+                            offset: Offset(widget.translateAnimation.value.dx,
+                                widget.translateAnimation.value.dy),
+                            child: Container(
+                                width: widget.childSize.width,
+                                height: widget.childSize.height,
+                                decoration: BoxDecoration(
+                                    color: Colors.grey.shade200,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(5.0)),
+                                    boxShadow: [
+                                      const BoxShadow(
+                                          color: Colors.black38,
+                                          blurRadius: 10,
+                                          spreadRadius: 1)
+                                    ]),
+                                child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(5.0)),
+                                    child: widget.menuContent))));
+                  }),
+                )
+                //   child: TweenAnimationBuilder(
+                //     curve: Curves.easeOutBack,
+                //     duration: const Duration(milliseconds: 200),
+                //     builder: (BuildContext context, value, Widget? child) {
+                // return Transform.translate(
+                //   offset: Offset(xTranslate, yTranslate),
+                //   child: Transform.scale(
+                //       scale: value * scaleValue,
+                //       alignment: Alignment.center,
+                //       child: child),
+                // );
+                //     },
+                //     tween: Tween(begin: 0.0, end: 1.0),
+                // child: Container(
+                //   width: widget.childSize.width,
+                //   height: widget.childSize.height,
+                //   decoration: BoxDecoration(
+                //       color: Colors.grey.shade200,
+                //       borderRadius:
+                //           const BorderRadius.all(Radius.circular(5.0)),
+                //       boxShadow: [
+                //         const BoxShadow(
+                //             color: Colors.black38,
+                //             blurRadius: 10,
+                //             spreadRadius: 1)
+                //       ]),
+                //   child: ClipRRect(
+                //     borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+                //     child: widget.menuContent,
+                //   ),
+                // ),
+                //   ),
                 ),
-              ),
-            ),
           ],
         ),
       ),
