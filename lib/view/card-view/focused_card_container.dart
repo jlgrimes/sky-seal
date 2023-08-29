@@ -43,7 +43,7 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
       childSize = size;
     });
 
-    double scale = 2;
+    double scale = 2.2;
 
     scaleTween = Tween(begin: 1, end: scale);
     Size windowSize = MediaQuery.of(context).size;

@@ -28,7 +28,7 @@ class CardStackView extends StatelessWidget {
                         Offset(370.0, 0.0)
                       ])
                       ..addScale([0.9, 1.0, 0.9], Alignment.center),
-                itemWidth: 500.0 * cardAspectRatio,
+                itemWidth: 400.0 * cardAspectRatio,
                 itemHeight: 500.0,
                 itemCount: 3,
                 itemBuilder: (context, index) {
