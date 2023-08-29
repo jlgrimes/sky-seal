@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sky_seal/deck-view/card_in_deck_view.dart';
+import 'package:sky_seal/view/deck-view/card_in_deck_view.dart';
 
 class DeckView extends StatelessWidget {
   @override

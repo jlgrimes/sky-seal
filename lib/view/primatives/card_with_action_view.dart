@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sky_seal/primatives/card_view.dart';
+import 'package:sky_seal/view/primatives/card_view.dart';
 
 class CardWithActionView extends CardView {
   void Function() openContainerAction;

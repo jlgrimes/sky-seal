@@ -1,7 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:sky_seal/card-view/card_stack_view.dart';
-import 'package:sky_seal/primatives/card_with_action_view.dart';
+import 'package:sky_seal/view/card-view/card_stack_view.dart';
+import 'package:sky_seal/view/primatives/card_with_action_view.dart';
 
 class CardInDeckview extends StatelessWidget {
   @override
