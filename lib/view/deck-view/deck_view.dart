@@ -15,12 +15,12 @@ class DeckView extends StatelessWidget {
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       children: [
-        CardInDeckview(),
-        CardInDeckview(),
-        CardInDeckview(),
-        CardInDeckview(),
-        CardInDeckview(),
-        CardInDeckview()
+        CardInDeckview('swsh12-139'),
+        CardInDeckview('swsh12-139'),
+        CardInDeckview('swsh12-139'),
+        CardInDeckview('swsh12-139'),
+        CardInDeckview('swsh12-139'),
+        CardInDeckview('swsh12-139'),
       ],
     ));
   }

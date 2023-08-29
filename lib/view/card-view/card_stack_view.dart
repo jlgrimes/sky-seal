@@ -6,14 +6,10 @@ import 'dart:ui';
 
 class CardStackView extends StatelessWidget {
   void Function() openContainerAction;
-  late List<CardWithActionView> cards;
+  late List<String> cards;
 
   CardStackView(Function() this.openContainerAction, {super.key}) {
-    cards = [
-      CardWithActionView(openContainerAction),
-      CardWithActionView(openContainerAction),
-      CardWithActionView(openContainerAction),
-    ];
+    cards = ['swsh12-140', 'swsh12-140', 'swsh12-140'];
   }
 
   @override
@@ -51,7 +47,7 @@ class CardStackView extends StatelessWidget {
               itemHeight: 400.0,
               itemCount: 3,
               itemBuilder: (context, index) {
-                return CardWithActionView(openContainerAction);
+                return CardWithActionView(openContainerAction, cards[index]);
               },
               loop: false,
             ),
