@@ -28,23 +28,23 @@ class CardStackView extends StatelessWidget {
           children: [
             Flexible(
               child: Swiper(
-                layout: SwiperLayout.CUSTOM,
-                customLayoutOption:
-                    CustomLayoutOption(startIndex: -1, stateCount: 3)
-                      ..addTranslate([
-                        Offset(-370.0, 0.0),
-                        Offset(0.0, 0.0),
-                        Offset(370.0, 0.0)
-                      ])
-                      ..addScale([0.9, 1.0, 0.9], Alignment.center),
-                itemWidth: 400.0 * cardAspectRatio,
-                itemHeight: 500.0,
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return CardView(cards[index]);
-                },
-                loop: false,
-              ),
+                  layout: SwiperLayout.CUSTOM,
+                  customLayoutOption:
+                      CustomLayoutOption(startIndex: -1, stateCount: 3)
+                        ..addTranslate([
+                          Offset(-370.0, 0.0),
+                          Offset(0.0, 0.0),
+                          Offset(370.0, 0.0)
+                        ])
+                        ..addScale([0.9, 1.0, 0.9], Alignment.center),
+                  itemWidth: 400.0 * cardAspectRatio,
+                  itemHeight: 500.0,
+                  itemCount: 3,
+                  itemBuilder: (context, index) {
+                    return CardView(cards[index]);
+                  },
+                  loop: false,
+                  onIndexChanged: ((value) {})),
             )
           ],
         )))
