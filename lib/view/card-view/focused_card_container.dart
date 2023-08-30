@@ -75,9 +75,7 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
                   transitionDuration: Duration(milliseconds: 2000),
                   pageBuilder: (context, animation, secondaryAnimation) {
                     animation = Tween(begin: 1.0, end: 1.0).animate(animation);
-                    cardAnimator.controller.forward().whenCompleteOrCancel(() {
-                      cardAnimator.controller.reset();
-                    });
+                    cardAnimator.runEnterAnimation();
                     return FadeTransition(
                         opacity: animation,
                         child: CardStackViewOverlay(
