@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+enum CardAnimationType { enter, exit }
+
 class CardAnimationDetails {
   Tween<double> scaleTween;
   Tween<Offset> translateTween;
@@ -17,17 +19,26 @@ class CardAnimator {
   late AnimationController controller;
   CardAnimationDetails? details;
   final TickerProvider tickerProvider;
+  final CardAnimationType animationType;
 
-  CardAnimator({required this.tickerProvider}) {
+  CardAnimator({required this.tickerProvider, required this.animationType}) {
     controller = AnimationController(
         duration: const Duration(milliseconds: 400), vsync: tickerProvider);
   }
 
   computeAnimationDetails(
       BuildContext context, RenderBox renderBox, Size size, Offset offset) {
+    bool cardIsEntering = (animationType == CardAnimationType.enter);
+
     // For the zoom in animation
     double scale = 2.2;
-    Tween<double> scaleTween = Tween(begin: 1, end: scale);
+    Tween<double> scaleTween;
+    if (cardIsEntering) {
+      scaleTween = Tween(begin: 1, end: scale);
+    } else {
+      scaleTween = Tween(begin: scale, end: 1);
+    }
+
     Size windowSize = MediaQuery.of(context).size;
 
     final double xTranslate = (windowSize.width / 2) - size.width / 2;
@@ -35,17 +46,18 @@ class CardAnimator {
 
     Offset startingOffset = Offset(offset.dx, offset.dy);
     Offset finalOffset = Offset(xTranslate, yTranslate);
-    Tween<Offset> translateTween =
-        Tween(begin: startingOffset, end: finalOffset);
+    Tween<Offset> translateTween;
+
+    if (cardIsEntering) {
+      translateTween = Tween(begin: startingOffset, end: finalOffset);
+    } else {
+      translateTween = Tween(begin: finalOffset, end: startingOffset);
+    }
 
     Animation<Offset> translateAnimation = controller
         .drive(translateTween.chain(CurveTween(curve: Curves.easeOutBack)));
     Animation<double> scaleAnimation = controller
         .drive(scaleTween.chain(CurveTween(curve: Curves.easeOutBack)));
-
-    // For the zoom out animation
-    scaleTween = Tween(begin: scale, end: 1);
-    translateTween = Tween(begin: finalOffset, end: startingOffset);
 
     details = CardAnimationDetails(
         scaleTween: scaleTween,

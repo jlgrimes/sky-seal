@@ -17,8 +17,9 @@ class FocusedCardContainer extends StatefulWidget {
 }
 
 class _FocusedMenuHolderState extends State<FocusedCardContainer>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late CardAnimator focusOnCardAnimator;
+  late CardAnimator cardGoAwayAnimator;
 
   GlobalKey containerKey = GlobalKey();
   Offset childOffset = Offset(0, 0);
@@ -27,7 +28,10 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
   void initState() {
     super.initState();
 
-    focusOnCardAnimator = CardAnimator(tickerProvider: this);
+    focusOnCardAnimator = CardAnimator(
+        tickerProvider: this, animationType: CardAnimationType.enter);
+    cardGoAwayAnimator = CardAnimator(
+        tickerProvider: this, animationType: CardAnimationType.exit);
   }
 
   getOffsetAndDeclareAnimations(BuildContext context) {
@@ -59,7 +63,16 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
         key: containerKey,
         onTap: () async {
           getOffsetAndDeclareAnimations(context);
+          appState.setDeckViewState(DeckViewState.enteringCardFocus);
           appState.setCurrentlyViewingCard(widget.code);
+
+          Future.delayed(const Duration(milliseconds: 400), () {
+            //asynchronous delay
+            if (mounted) {
+              appState.setDeckViewState(DeckViewState.focusedOnCard);
+            }
+          });
+
           await Navigator.push(
               context,
               PageRouteBuilder(

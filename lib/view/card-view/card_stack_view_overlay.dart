@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sky_seal/view/card-view/card_animator.dart';
+import 'package:sky_seal/view/card-view/whoop_card_view_overlay.dart';
 import 'package:sky_seal/view/state/app_state_provider.dart';
 
 class CardStackViewOverlay extends StatefulWidget {
@@ -46,8 +47,7 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
 
   @override
   Widget build(BuildContext context) {
-    AppStateProvider appState =
-        Provider.of<AppStateProvider>(context, listen: false);
+    AppStateProvider appState = Provider.of<AppStateProvider>(context);
 
     Size size = MediaQuery.of(context).size;
 
@@ -66,36 +66,11 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
                     ),
                   ],
                 )),
-            Visibility(
-              visible: !_shouldRenderStack,
-              child: Positioned(
-                  top: 0,
-                  left: 0,
-                  child: AnimatedBuilder(
-                    animation: widget.focusOnCardAnimator.controller,
-                    builder: ((context, _) {
-                      if (widget.focusOnCardAnimator.details == null) {
-                        return widget.child;
-                      }
-
-                      return Transform.translate(
-                          offset: Offset(
-                              widget.focusOnCardAnimator.details!
-                                  .translateAnimation.value.dx,
-                              widget.focusOnCardAnimator.details!
-                                  .translateAnimation.value.dy),
-                          child: SizedBox(
-                              width: widget.childSize.width,
-                              height: widget.childSize.height,
-                              child: Transform.scale(
-                                  scale: widget.focusOnCardAnimator.details!
-                                      .scaleAnimation.value,
-                                  child: ClipRRect(
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(5.0)),
-                                      child: widget.child))));
-                    }),
-                  )),
+            WhoopCardViewOverlay(
+              child: widget.child,
+              cardAnimator: widget.focusOnCardAnimator,
+              childSize: widget.childSize,
+              shouldRender: _shouldRenderStack,
             ),
             Visibility(
               visible: _shouldRenderStack,
@@ -109,10 +84,13 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
                           _shouldRenderStack =
                               false; //update the variable declare this under your class so its accessible for both your widget build and initState which is located under widget build{}
                         });
-                        // appState.setCurrentlyViewingCard(null);
+                        // appState
+                        //     .setDeckViewState(DeckViewState.exitingCardFocus);
                         widget.focusOnCardAnimator.controller.reverse();
                         Future.delayed(Duration(milliseconds: 300), () {
                           Navigator.pop(context);
+                          // appState
+                          //     .setDeckViewState(DeckViewState.noCardsFocused);
                         });
                       },
                       child: widget.menuContent)),
