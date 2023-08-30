@@ -1,3 +1,4 @@
+import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sky_seal/view/card-view/card_animator.dart';
@@ -17,7 +18,7 @@ class FocusedCardContainer extends StatefulWidget {
 }
 
 class _FocusedMenuHolderState extends State<FocusedCardContainer>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, AfterLayoutMixin<FocusedCardContainer> {
   late CardAnimator cardAnimator;
 
   GlobalKey containerKey = GlobalKey();
@@ -42,6 +43,16 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
     });
 
     cardAnimator.computeAnimationDetails(context, renderBox, size, offset);
+
+    AppStateProvider appState =
+        Provider.of<AppStateProvider>(context, listen: false);
+
+    appState.cardPositionState.addCardPosition(widget.code, offset);
+  }
+
+  @override
+  void afterFirstLayout(BuildContext context) {
+    getOffsetAndDeclareAnimations(context);
   }
 
   @override
