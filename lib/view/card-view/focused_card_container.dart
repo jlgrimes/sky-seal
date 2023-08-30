@@ -87,6 +87,7 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
                           childOffset: childOffset,
                           childSize: childSize!,
                           focusOnCardAnimator: focusOnCardAnimator,
+                          cardGoAwayAnimator: cardGoAwayAnimator,
                           child: WhoopCardView(widget.code),
                         ));
                   },

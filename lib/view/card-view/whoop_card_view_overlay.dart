@@ -1,54 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:sky_seal/view/card-view/card_animator.dart';
-import 'package:sky_seal/view/state/app_state_provider.dart';
 
 class WhoopCardViewOverlay extends StatelessWidget {
   final Widget child;
   final CardAnimator cardAnimator;
   final Size childSize;
-  final bool shouldRender;
 
   WhoopCardViewOverlay(
       {Key? key,
       required this.child,
       required this.cardAnimator,
-      required this.childSize,
-      required this.shouldRender})
+      required this.childSize})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    AppStateProvider appState = Provider.of<AppStateProvider>(context);
-    debugPrint(shouldRender.toString());
+    return Positioned(
+        top: 0,
+        left: 0,
+        child: AnimatedBuilder(
+          animation: cardAnimator.controller,
+          builder: ((context, _) {
+            if (cardAnimator.details == null) {
+              return child;
+            }
 
-    return Visibility(
-      visible: !shouldRender,
-      child: Positioned(
-          top: 0,
-          left: 0,
-          child: AnimatedBuilder(
-            animation: cardAnimator.controller,
-            builder: ((context, _) {
-              if (cardAnimator.details == null) {
-                return child;
-              }
-
-              return Transform.translate(
-                  offset: Offset(
-                      cardAnimator.details!.translateAnimation.value.dx,
-                      cardAnimator.details!.translateAnimation.value.dy),
-                  child: SizedBox(
-                      width: childSize.width,
-                      height: childSize.height,
-                      child: Transform.scale(
-                          scale: cardAnimator.details!.scaleAnimation.value,
-                          child: ClipRRect(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(5.0)),
-                              child: child))));
-            }),
-          )),
-    );
+            return Transform.translate(
+                offset: Offset(
+                    cardAnimator.details!.translateAnimation.value.dx,
+                    cardAnimator.details!.translateAnimation.value.dy),
+                child: SizedBox(
+                    width: childSize.width,
+                    height: childSize.height,
+                    child: Transform.scale(
+                        scale: cardAnimator.details!.scaleAnimation.value,
+                        child: ClipRRect(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5.0)),
+                            child: child))));
+          }),
+        ));
   }
 }

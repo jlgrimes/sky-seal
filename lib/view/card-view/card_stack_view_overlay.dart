@@ -12,6 +12,7 @@ class CardStackViewOverlay extends StatefulWidget {
   final Widget menuContent;
   final Widget child;
   final CardAnimator focusOnCardAnimator;
+  final CardAnimator cardGoAwayAnimator;
 
   CardStackViewOverlay(
       {Key? key,
@@ -19,7 +20,8 @@ class CardStackViewOverlay extends StatefulWidget {
       required this.childOffset,
       required this.childSize,
       required this.child,
-      required this.focusOnCardAnimator})
+      required this.focusOnCardAnimator,
+      required this.cardGoAwayAnimator})
       : super(key: key);
 
   @override
@@ -70,7 +72,6 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
               child: widget.child,
               cardAnimator: widget.focusOnCardAnimator,
               childSize: widget.childSize,
-              shouldRender: _shouldRenderStack,
             ),
             Visibility(
               visible: _shouldRenderStack,
