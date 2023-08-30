@@ -45,7 +45,9 @@ class CardStackView extends StatelessWidget {
                     return CardView(cards[index]);
                   },
                   loop: false,
-                  onIndexChanged: ((value) {})),
+                  onIndexChanged: ((value) {
+                    setCurrentlyViewingCard(cards[value]);
+                  })),
             )
           ],
         )))

@@ -8,8 +8,10 @@ import 'package:sky_seal/view/primatives/constants.dart';
 
 class FocusedCardContainer extends StatefulWidget {
   final String code;
+  final Function(String code) setCurrentlyViewingCard;
 
-  const FocusedCardContainer({Key? key, required this.code});
+  const FocusedCardContainer(
+      {Key? key, required this.code, required this.setCurrentlyViewingCard});
 
   @override
   _FocusedMenuHolderState createState() => _FocusedMenuHolderState();
@@ -26,8 +28,6 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
   GlobalKey containerKey = GlobalKey();
   Offset childOffset = Offset(0, 0);
   Size? childSize;
-
-  String? _currentlyViewingCard;
 
   void initState() {
     super.initState();
@@ -64,12 +64,6 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
         .drive(scaleTween.chain(CurveTween(curve: Curves.easeOutBack)));
   }
 
-  setCurrentlyViewingCard(String code) {
-    setState(() {
-      _currentlyViewingCard = code;
-    });
-  }
-
   @override
   void dispose() {
     super.dispose();
@@ -93,7 +87,7 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
                         opacity: animation,
                         child: CardStackViewOverlay(
                           menuContent: CardStackView(
-                              widget.code, setCurrentlyViewingCard),
+                              widget.code, widget.setCurrentlyViewingCard),
                           child: CardView(widget.code),
                           childOffset: childOffset,
                           childSize: childSize!,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sky_seal/view/deck-view/deck_view.dart';
+import 'package:sky_seal/view/deck-view/deck_view_controller.dart';
+import 'package:sky_seal/view/deck-view/deck_view_store_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -105,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // action in the IDE, or press "p" in the console), to see the
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[DeckView()],
+          children: <Widget>[DeckViewController()],
         ),
       ),
       floatingActionButton: FloatingActionButton(
