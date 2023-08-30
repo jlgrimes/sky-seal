@@ -90,6 +90,7 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
                     return FadeTransition(
                         opacity: animation,
                         child: CardStackViewOverlay(
+                          code: widget.code,
                           menuContent: CardStackView(widget.code),
                           childOffset: childOffset,
                           childSize: childSize!,

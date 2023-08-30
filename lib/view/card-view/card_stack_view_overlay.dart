@@ -7,6 +7,7 @@ import 'package:sky_seal/view/card-view/whoop_card_view_overlay.dart';
 import 'package:sky_seal/view/state/app_state_provider.dart';
 
 class CardStackViewOverlay extends StatefulWidget {
+  final String code;
   final Offset childOffset;
   final Size childSize;
   final Widget menuContent;
@@ -15,6 +16,7 @@ class CardStackViewOverlay extends StatefulWidget {
 
   CardStackViewOverlay(
       {Key? key,
+      required this.code,
       required this.menuContent,
       required this.childOffset,
       required this.childSize,
@@ -88,7 +90,9 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
                         // appState
                         //     .setDeckViewState(DeckViewState.exitingCardFocus);
                         //widget.cardAnimator.controller.reverse();
-                        widget.cardAnimator.runExitAnimation(context);
+                        widget.cardAnimator.runExitAnimation(
+                            appState.cardPositionState.getCardPosition(
+                                appState.currentlyViewingCard ?? widget.code));
                         Future.delayed(Duration(milliseconds: 300), () {
                           Navigator.pop(context);
                           // appState

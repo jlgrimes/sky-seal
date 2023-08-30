@@ -69,14 +69,10 @@ class CardAnimator {
   }
 
 // This is to be called AFTER inverseAnimationDetails on exit, once coords are flipped
-  adjustExitAnimationForNewCard(BuildContext context) {
-    AppStateProvider appState =
-        Provider.of<AppStateProvider>(context, listen: false);
-
+  adjustExitAnimationForNewCard(Offset positionOfCurrentlyViewingCard) {
     Tween<Offset> translateTween = Tween(
         begin: details!.translateTween.begin,
-        end: appState.cardPositionState
-            .getCardPosition(appState.currentlyViewingCard!));
+        end: positionOfCurrentlyViewingCard);
 
     details = CardAnimationDetails(
         scaleTween: details!.scaleTween,
@@ -109,9 +105,9 @@ class CardAnimator {
     });
   }
 
-  runExitAnimation(BuildContext context) {
+  runExitAnimation(Offset positionOfCurrentlyViewingCard) {
     inverseAnimationDetails();
-    adjustExitAnimationForNewCard(context);
+    adjustExitAnimationForNewCard(positionOfCurrentlyViewingCard);
     controller.forward().whenCompleteOrCancel(() {
       inverseAnimationDetails();
       controller.reset();
