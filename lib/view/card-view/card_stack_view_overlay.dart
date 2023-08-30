@@ -29,7 +29,7 @@ class CardStackViewOverlay extends StatefulWidget {
 }
 
 class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
-  bool _shouldRenderStack = false;
+  DeckViewState _deckViewState = DeckViewState.exitingCardFocus;
 
   @override
   void initState() {
@@ -40,8 +40,8 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
         //checks if widget is still active and not disposed
         setState(() {
           //tells the widget builder to rebuild again because ui has updated
-          _shouldRenderStack =
-              true; //update the variable declare this under your class so its accessible for both your widget build and initState which is located under widget build{}
+          _deckViewState = DeckViewState
+              .enteringCardFocus; //update the variable declare this under your class so its accessible for both your widget build and initState which is located under widget build{}
         });
       }
     });
@@ -68,13 +68,15 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
                     ),
                   ],
                 )),
-            WhoopCardViewOverlay(
-              child: widget.child,
-              cardAnimator: widget.focusOnCardAnimator,
-              childSize: widget.childSize,
-            ),
             Visibility(
-              visible: _shouldRenderStack,
+                visible: _deckViewState == DeckViewState.exitingCardFocus,
+                child: WhoopCardViewOverlay(
+                  child: widget.child,
+                  cardAnimator: widget.focusOnCardAnimator,
+                  childSize: widget.childSize,
+                )),
+            Visibility(
+              visible: _deckViewState == DeckViewState.enteringCardFocus,
               child: SizedBox(
                   width: size.width,
                   height: size.height,
@@ -82,8 +84,8 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
                       onTap: () {
                         setState(() {
                           //tells the widget builder to rebuild again because ui has updated
-                          _shouldRenderStack =
-                              false; //update the variable declare this under your class so its accessible for both your widget build and initState which is located under widget build{}
+                          _deckViewState = DeckViewState
+                              .exitingCardFocus; //update the variable declare this under your class so its accessible for both your widget build and initState which is located under widget build{}
                         });
                         // appState
                         //     .setDeckViewState(DeckViewState.exitingCardFocus);
