@@ -87,7 +87,8 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
                         });
                         // appState
                         //     .setDeckViewState(DeckViewState.exitingCardFocus);
-                        widget.cardAnimator.controller.reverse();
+                        //widget.cardAnimator.controller.reverse();
+                        widget.cardAnimator.runExitAnimation();
                         Future.delayed(Duration(milliseconds: 300), () {
                           Navigator.pop(context);
                           // appState

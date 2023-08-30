@@ -66,7 +66,7 @@ class CardAnimator {
         translateAnimation: translateAnimation);
   }
 
-  instantiateZoomOutAnimation() {
+  inverseAnimationDetails() {
     Tween<double> scaleTween =
         Tween(begin: details!.scaleTween.end, end: details!.scaleTween.begin);
     Tween<Offset> translateTween = Tween(
@@ -82,5 +82,19 @@ class CardAnimator {
         translateTween: translateTween,
         scaleAnimation: scaleAnimation,
         translateAnimation: translateAnimation);
+  }
+
+  runEnterAnimation() {
+    controller.forward().whenCompleteOrCancel(() {
+      controller.reset();
+    });
+  }
+
+  runExitAnimation() {
+    inverseAnimationDetails();
+    controller.forward().whenCompleteOrCancel(() {
+      inverseAnimationDetails();
+      controller.reset();
+    });
   }
 }
