@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sky_seal/view/card-view/card_stack_view.dart';
 import 'package:sky_seal/view/card-view/card_stack_view_overlay.dart';
 import 'package:sky_seal/view/card-view/whoop_card_view.dart';
 import 'package:sky_seal/view/primatives/card_view.dart';
+import 'package:sky_seal/view/state/app_state_provider.dart';
 
 class FocusedCardContainer extends StatefulWidget {
   final String code;
@@ -68,10 +70,14 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
 
   @override
   Widget build(BuildContext context) {
+    AppStateProvider appState =
+        Provider.of<AppStateProvider>(context, listen: false);
+
     return GestureDetector(
         key: containerKey,
         onTap: () async {
           getOffsetAndDeclareAnimations(context);
+          appState.setCurrentlyViewingCard(widget.code);
           await Navigator.push(
               context,
               PageRouteBuilder(
