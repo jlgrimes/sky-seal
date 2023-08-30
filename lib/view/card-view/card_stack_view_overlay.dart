@@ -10,6 +10,7 @@ class CardStackViewOverlay extends StatefulWidget {
   final AnimationController controller;
   final Animation<double> scaleAnimation;
   final Animation<Offset> translateAnimation;
+  final Function(String? code) setCurrentlyViewingCard;
 
   CardStackViewOverlay(
       {Key? key,
@@ -19,7 +20,8 @@ class CardStackViewOverlay extends StatefulWidget {
       required this.child,
       required this.controller,
       required this.scaleAnimation,
-      required this.translateAnimation})
+      required this.translateAnimation,
+      required this.setCurrentlyViewingCard})
       : super(key: key);
 
   @override
@@ -99,6 +101,7 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
                           _shouldRenderStack =
                               false; //update the variable declare this under your class so its accessible for both your widget build and initState which is located under widget build{}
                         });
+                        widget.setCurrentlyViewingCard(null);
                         widget.controller.reverse();
                         Future.delayed(Duration(milliseconds: 300), () {
                           Navigator.pop(context);

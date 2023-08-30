@@ -1,14 +1,12 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:sky_seal/view/card-view/card_stack_view.dart';
 import 'package:sky_seal/view/card-view/card_stack_view_overlay.dart';
+import 'package:sky_seal/view/card-view/whoop_card_view.dart';
 import 'package:sky_seal/view/primatives/card_view.dart';
-import 'package:sky_seal/view/primatives/constants.dart';
 
 class FocusedCardContainer extends StatefulWidget {
   final String code;
-  final Function(String code) setCurrentlyViewingCard;
+  final Function(String? code) setCurrentlyViewingCard;
 
   const FocusedCardContainer(
       {Key? key, required this.code, required this.setCurrentlyViewingCard});
@@ -88,12 +86,14 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
                         child: CardStackViewOverlay(
                           menuContent: CardStackView(
                               widget.code, widget.setCurrentlyViewingCard),
-                          child: CardView(widget.code),
+                          child: WhoopCardView(widget.code),
                           childOffset: childOffset,
                           childSize: childSize!,
                           controller: controller,
                           scaleAnimation: scaleAnimation,
                           translateAnimation: translateAnimation,
+                          setCurrentlyViewingCard:
+                              widget.setCurrentlyViewingCard,
                         ));
                   },
                   fullscreenDialog: true,

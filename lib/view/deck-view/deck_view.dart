@@ -5,7 +5,7 @@ import 'package:sky_seal/util/deck.dart';
 import 'package:sky_seal/view/card-view/focused_card_container.dart';
 
 class DeckView extends StatelessWidget {
-  late Function(String code) setCurrentlyViewingCard;
+  late Function(String? code) setCurrentlyViewingCard;
 
   DeckView(this.setCurrentlyViewingCard, {super.key});
 

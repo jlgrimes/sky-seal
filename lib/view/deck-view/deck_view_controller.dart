@@ -16,7 +16,7 @@ class _ViewControllerState extends State<DeckViewController> {
     _currentlyViewingCard = null;
   }
 
-  setCurrentlyViewingCard(String code) {
+  setCurrentlyViewingCard(String? code) {
     setState(() {
       _currentlyViewingCard = code;
     });
