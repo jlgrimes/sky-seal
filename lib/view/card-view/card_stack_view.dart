@@ -1,15 +1,16 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sky_seal/util/deck.dart';
 import 'package:sky_seal/view/primatives/card_view.dart';
 import 'package:sky_seal/view/primatives/constants.dart';
+import 'package:sky_seal/view/state/app_state_provider.dart';
 
 class CardStackView extends StatelessWidget {
-  late Function(String code) setCurrentlyViewingCard;
   late String startingCode;
   List<String> cards = myDeckList;
 
-  CardStackView(this.startingCode, this.setCurrentlyViewingCard) {
+  CardStackView(this.startingCode) {
     // This should not happen help
     if (!cards.contains(startingCode)) return;
     int startingCodeIdx = cards.indexOf(startingCode);
@@ -22,6 +23,9 @@ class CardStackView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppStateProvider appState =
+        Provider.of<AppStateProvider>(context, listen: false);
+
     return Container(
       child: Column(children: [
         (Expanded(
@@ -46,7 +50,7 @@ class CardStackView extends StatelessWidget {
                   },
                   loop: false,
                   onIndexChanged: ((value) {
-                    setCurrentlyViewingCard(cards[value]);
+                    appState.setCurrentlyViewingCard(cards[value]);
                   })),
             )
           ],

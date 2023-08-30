@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sky_seal/view/state/app_state_provider.dart';
 
 class CardStackViewOverlay extends StatefulWidget {
   final Offset childOffset;
@@ -10,7 +12,6 @@ class CardStackViewOverlay extends StatefulWidget {
   final AnimationController controller;
   final Animation<double> scaleAnimation;
   final Animation<Offset> translateAnimation;
-  final Function(String? code) setCurrentlyViewingCard;
 
   CardStackViewOverlay(
       {Key? key,
@@ -20,8 +21,7 @@ class CardStackViewOverlay extends StatefulWidget {
       required this.child,
       required this.controller,
       required this.scaleAnimation,
-      required this.translateAnimation,
-      required this.setCurrentlyViewingCard})
+      required this.translateAnimation})
       : super(key: key);
 
   @override
@@ -49,6 +49,9 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
 
   @override
   Widget build(BuildContext context) {
+    AppStateProvider appState =
+        Provider.of<AppStateProvider>(context, listen: false);
+
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -101,7 +104,7 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
                           _shouldRenderStack =
                               false; //update the variable declare this under your class so its accessible for both your widget build and initState which is located under widget build{}
                         });
-                        widget.setCurrentlyViewingCard(null);
+                        // appState.setCurrentlyViewingCard(null);
                         widget.controller.reverse();
                         Future.delayed(Duration(milliseconds: 300), () {
                           Navigator.pop(context);

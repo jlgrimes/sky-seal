@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:sky_seal/util/sets.dart';
-import 'package:sky_seal/view/deck-view/deck_view_store_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:sky_seal/view/primatives/card_view.dart';
+import 'package:sky_seal/view/state/app_state_provider.dart';
 
 class WhoopCardView extends CardView {
   WhoopCardView(code) : super(code);
 
   @override
   Widget build(BuildContext context) {
-    final currentlyViewingCard =
-        DeckViewStoreProvider.of(context)?.currentlyViewingCard;
+    AppStateProvider appState = Provider.of<AppStateProvider>(context);
 
-    return CardView(currentlyViewingCard ?? code);
+    return CardView(appState.currentlyViewingCard ?? code);
   }
 }

@@ -6,10 +6,8 @@ import 'package:sky_seal/view/primatives/card_view.dart';
 
 class FocusedCardContainer extends StatefulWidget {
   final String code;
-  final Function(String? code) setCurrentlyViewingCard;
 
-  const FocusedCardContainer(
-      {Key? key, required this.code, required this.setCurrentlyViewingCard});
+  const FocusedCardContainer({Key? key, required this.code});
 
   @override
   _FocusedMenuHolderState createState() => _FocusedMenuHolderState();
@@ -84,16 +82,13 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
                     return FadeTransition(
                         opacity: animation,
                         child: CardStackViewOverlay(
-                          menuContent: CardStackView(
-                              widget.code, widget.setCurrentlyViewingCard),
+                          menuContent: CardStackView(widget.code),
                           child: WhoopCardView(widget.code),
                           childOffset: childOffset,
                           childSize: childSize!,
                           controller: controller,
                           scaleAnimation: scaleAnimation,
                           translateAnimation: translateAnimation,
-                          setCurrentlyViewingCard:
-                              widget.setCurrentlyViewingCard,
                         ));
                   },
                   fullscreenDialog: true,
