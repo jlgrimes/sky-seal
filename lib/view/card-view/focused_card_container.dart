@@ -18,8 +18,7 @@ class FocusedCardContainer extends StatefulWidget {
 
 class _FocusedMenuHolderState extends State<FocusedCardContainer>
     with TickerProviderStateMixin {
-  late CardAnimator focusOnCardAnimator;
-  late CardAnimator cardGoAwayAnimator;
+  late CardAnimator cardAnimator;
 
   GlobalKey containerKey = GlobalKey();
   Offset childOffset = Offset(0, 0);
@@ -28,10 +27,8 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
   void initState() {
     super.initState();
 
-    focusOnCardAnimator = CardAnimator(
+    cardAnimator = CardAnimator(
         tickerProvider: this, animationType: CardAnimationType.enter);
-    cardGoAwayAnimator = CardAnimator(
-        tickerProvider: this, animationType: CardAnimationType.exit);
   }
 
   getOffsetAndDeclareAnimations(BuildContext context) {
@@ -44,14 +41,13 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
       childSize = size;
     });
 
-    focusOnCardAnimator.computeAnimationDetails(
-        context, renderBox, size, offset);
+    cardAnimator.computeAnimationDetails(context, renderBox, size, offset);
   }
 
   @override
   void dispose() {
     super.dispose();
-    focusOnCardAnimator.controller.dispose();
+    cardAnimator.controller.dispose();
   }
 
   @override
@@ -79,15 +75,14 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
                   transitionDuration: Duration(milliseconds: 2000),
                   pageBuilder: (context, animation, secondaryAnimation) {
                     animation = Tween(begin: 1.0, end: 1.0).animate(animation);
-                    focusOnCardAnimator.controller.forward();
+                    cardAnimator.controller.forward();
                     return FadeTransition(
                         opacity: animation,
                         child: CardStackViewOverlay(
                           menuContent: CardStackView(widget.code),
                           childOffset: childOffset,
                           childSize: childSize!,
-                          focusOnCardAnimator: focusOnCardAnimator,
-                          cardGoAwayAnimator: cardGoAwayAnimator,
+                          cardAnimator: cardAnimator,
                           child: WhoopCardView(widget.code),
                         ));
                   },

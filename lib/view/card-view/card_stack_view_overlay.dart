@@ -11,8 +11,7 @@ class CardStackViewOverlay extends StatefulWidget {
   final Size childSize;
   final Widget menuContent;
   final Widget child;
-  final CardAnimator focusOnCardAnimator;
-  final CardAnimator cardGoAwayAnimator;
+  final CardAnimator cardAnimator;
 
   CardStackViewOverlay(
       {Key? key,
@@ -20,8 +19,7 @@ class CardStackViewOverlay extends StatefulWidget {
       required this.childOffset,
       required this.childSize,
       required this.child,
-      required this.focusOnCardAnimator,
-      required this.cardGoAwayAnimator})
+      required this.cardAnimator})
       : super(key: key);
 
   @override
@@ -72,7 +70,7 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
                 visible: _deckViewState == DeckViewState.exitingCardFocus,
                 child: WhoopCardViewOverlay(
                   child: widget.child,
-                  cardAnimator: widget.focusOnCardAnimator,
+                  cardAnimator: widget.cardAnimator,
                   childSize: widget.childSize,
                 )),
             Visibility(
@@ -89,7 +87,7 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
                         });
                         // appState
                         //     .setDeckViewState(DeckViewState.exitingCardFocus);
-                        widget.focusOnCardAnimator.controller.reverse();
+                        widget.cardAnimator.controller.reverse();
                         Future.delayed(Duration(milliseconds: 300), () {
                           Navigator.pop(context);
                           // appState

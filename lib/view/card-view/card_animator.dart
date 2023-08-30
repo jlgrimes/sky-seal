@@ -65,4 +65,22 @@ class CardAnimator {
         scaleAnimation: scaleAnimation,
         translateAnimation: translateAnimation);
   }
+
+  instantiateZoomOutAnimation() {
+    Tween<double> scaleTween =
+        Tween(begin: details!.scaleTween.end, end: details!.scaleTween.begin);
+    Tween<Offset> translateTween = Tween(
+        begin: details!.translateTween.end, end: details!.translateTween.begin);
+
+    Animation<Offset> translateAnimation = controller
+        .drive(translateTween.chain(CurveTween(curve: Curves.easeOutBack)));
+    Animation<double> scaleAnimation = controller
+        .drive(scaleTween.chain(CurveTween(curve: Curves.easeOutBack)));
+
+    details = CardAnimationDetails(
+        scaleTween: scaleTween,
+        translateTween: translateTween,
+        scaleAnimation: scaleAnimation,
+        translateAnimation: translateAnimation);
+  }
 }
