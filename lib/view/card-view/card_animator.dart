@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sky_seal/view/state/app_state_provider.dart';
 
 enum CardAnimationType { enter, exit }
 
@@ -66,6 +68,23 @@ class CardAnimator {
         translateAnimation: translateAnimation);
   }
 
+// This is to be called AFTER inverseAnimationDetails on exit, once coords are flipped
+  adjustExitAnimationForNewCard(BuildContext context) {
+    AppStateProvider appState =
+        Provider.of<AppStateProvider>(context, listen: false);
+
+    Tween<Offset> translateTween = Tween(
+        begin: details!.translateTween.begin,
+        end: appState.cardPositionState
+            .getCardPosition(appState.currentlyViewingCard!));
+
+    details = CardAnimationDetails(
+        scaleTween: details!.scaleTween,
+        translateTween: translateTween,
+        scaleAnimation: details!.scaleAnimation,
+        translateAnimation: details!.translateAnimation);
+  }
+
   inverseAnimationDetails() {
     Tween<double> scaleTween =
         Tween(begin: details!.scaleTween.end, end: details!.scaleTween.begin);
@@ -90,8 +109,9 @@ class CardAnimator {
     });
   }
 
-  runExitAnimation() {
+  runExitAnimation(BuildContext context) {
     inverseAnimationDetails();
+    adjustExitAnimationForNewCard(context);
     controller.forward().whenCompleteOrCancel(() {
       inverseAnimationDetails();
       controller.reset();

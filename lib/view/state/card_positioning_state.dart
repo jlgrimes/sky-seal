@@ -14,4 +14,8 @@ class CardPositioningState {
   addCardPosition(String code, Offset offset) {
     positions[code] = CardPosition(code: code, offset: offset);
   }
+
+  getCardPosition(String code) {
+    return positions[code]?.offset;
+  }
 }
