@@ -88,14 +88,14 @@ class CardAnimator {
   }
 
   runEnterAnimation() {
-    controller.forward().whenCompleteOrCancel(() {
+    controller.forward().whenComplete(() {
       controller.reset();
     });
   }
 
   runExitAnimation(Offset positionOfCurrentlyViewingCard) {
     inverseAnimationDetails(positionOfCurrentlyViewingCard);
-    controller.forward().whenCompleteOrCancel(() {
+    controller.forward().whenComplete(() {
       inverseAnimationDetails(null);
       controller.reset();
     });
