@@ -13,6 +13,10 @@ class AppStateProvider extends ChangeNotifier {
   DeckViewState deckViewState = DeckViewState.noCardsFocused;
   CardPositioningState cardPositionState = CardPositioningState();
 
+  sneakilySetCurrentlyViewingCard(String? code) {
+    currentlyViewingCard = code;
+  }
+
   setCurrentlyViewingCard(String? code) {
     currentlyViewingCard = code;
     notifyListeners();

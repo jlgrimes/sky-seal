@@ -57,9 +57,9 @@ class CardAnimator {
     }
 
     Animation<Offset> translateAnimation = controller
-        .drive(translateTween.chain(CurveTween(curve: Curves.easeOutBack)));
+        .drive(translateTween.chain(CurveTween(curve: Curves.easeOutCubic)));
     Animation<double> scaleAnimation = controller
-        .drive(scaleTween.chain(CurveTween(curve: Curves.easeOutBack)));
+        .drive(scaleTween.chain(CurveTween(curve: Curves.easeOutCubic)));
 
     details = CardAnimationDetails(
         scaleTween: scaleTween,
