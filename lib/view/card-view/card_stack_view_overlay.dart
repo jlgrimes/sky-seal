@@ -34,7 +34,7 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
   @override
   void initState() {
     super.initState(); //when this route starts, it will execute this code
-    Future.delayed(const Duration(milliseconds: 400), () {
+    Future.delayed(const Duration(milliseconds: 300), () {
       //asynchronous delay
       if (this.mounted) {
         //checks if widget is still active and not disposed
@@ -93,7 +93,7 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
                         widget.cardAnimator.runExitAnimation(
                             appState.cardPositionState.getCardPosition(
                                 appState.currentlyViewingCard ?? widget.code));
-                        Future.delayed(Duration(milliseconds: 300), () {
+                        Future.delayed(Duration(milliseconds: 200), () {
                           Navigator.pop(context);
                           // appState
                           //     .setDeckViewState(DeckViewState.noCardsFocused);

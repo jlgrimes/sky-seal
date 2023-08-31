@@ -25,7 +25,7 @@ class CardAnimator {
 
   CardAnimator({required this.tickerProvider, required this.animationType}) {
     controller = AnimationController(
-        duration: const Duration(milliseconds: 400), vsync: tickerProvider);
+        duration: const Duration(milliseconds: 300), vsync: tickerProvider);
   }
 
   computeAnimationDetails(
@@ -57,9 +57,9 @@ class CardAnimator {
     }
 
     Animation<Offset> translateAnimation = controller
-        .drive(translateTween.chain(CurveTween(curve: Curves.easeOutBack)));
+        .drive(translateTween.chain(CurveTween(curve: Curves.easeOutCubic)));
     Animation<double> scaleAnimation = controller
-        .drive(scaleTween.chain(CurveTween(curve: Curves.easeOutBack)));
+        .drive(scaleTween.chain(CurveTween(curve: Curves.easeOutCubic)));
 
     details = CardAnimationDetails(
         scaleTween: scaleTween,
@@ -68,17 +68,24 @@ class CardAnimator {
         translateAnimation: translateAnimation);
   }
 
-  inverseAnimationDetails(Offset? positionOfCurrentlyViewingCard) {
+  inverseAnimationDetails(
+      Offset? positionOfCurrentlyViewingCard, bool shouldReboundCurve) {
     Tween<double> scaleTween =
         Tween(begin: details!.scaleTween.end, end: details!.scaleTween.begin);
     Tween<Offset> translateTween = Tween(
         begin: details!.translateTween.end,
         end: positionOfCurrentlyViewingCard ?? details!.translateTween.begin);
 
-    Animation<Offset> translateAnimation = controller
-        .drive(translateTween.chain(CurveTween(curve: Curves.easeOutBack)));
-    Animation<double> scaleAnimation = controller
-        .drive(scaleTween.chain(CurveTween(curve: Curves.easeOutBack)));
+    Animation<Offset> translateAnimation = controller.drive(
+        translateTween.chain(CurveTween(
+            curve: shouldReboundCurve
+                ? Curves.easeOutBack
+                : Curves.easeOutCubic)));
+    Animation<double> scaleAnimation = controller.drive(scaleTween.chain(
+        CurveTween(
+            curve: shouldReboundCurve
+                ? Curves.easeOutBack
+                : Curves.easeOutCubic)));
 
     details = CardAnimationDetails(
         scaleTween: scaleTween,
@@ -94,9 +101,9 @@ class CardAnimator {
   }
 
   runExitAnimation(Offset positionOfCurrentlyViewingCard) {
-    inverseAnimationDetails(positionOfCurrentlyViewingCard);
+    inverseAnimationDetails(positionOfCurrentlyViewingCard, false);
     controller.forward().whenComplete(() {
-      inverseAnimationDetails(null);
+      inverseAnimationDetails(null, false);
       controller.reset();
     });
   }

@@ -73,7 +73,7 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
           appState.setDeckViewState(DeckViewState.enteringCardFocus);
           appState.setCurrentlyViewingCard(widget.code);
 
-          Future.delayed(const Duration(milliseconds: 400), () {
+          Future.delayed(const Duration(milliseconds: 300), () {
             //asynchronous delay
             if (mounted) {
               appState.setDeckViewState(DeckViewState.focusedOnCard);
