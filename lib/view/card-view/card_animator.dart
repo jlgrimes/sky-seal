@@ -68,24 +68,12 @@ class CardAnimator {
         translateAnimation: translateAnimation);
   }
 
-// This is to be called AFTER inverseAnimationDetails on exit, once coords are flipped
-  adjustExitAnimationForNewCard(Offset positionOfCurrentlyViewingCard) {
-    Tween<Offset> translateTween = Tween(
-        begin: details!.translateTween.begin,
-        end: positionOfCurrentlyViewingCard);
-
-    details = CardAnimationDetails(
-        scaleTween: details!.scaleTween,
-        translateTween: translateTween,
-        scaleAnimation: details!.scaleAnimation,
-        translateAnimation: details!.translateAnimation);
-  }
-
-  inverseAnimationDetails() {
+  inverseAnimationDetails(Offset? positionOfCurrentlyViewingCard) {
     Tween<double> scaleTween =
         Tween(begin: details!.scaleTween.end, end: details!.scaleTween.begin);
     Tween<Offset> translateTween = Tween(
-        begin: details!.translateTween.end, end: details!.translateTween.begin);
+        begin: details!.translateTween.end,
+        end: positionOfCurrentlyViewingCard ?? details!.translateTween.begin);
 
     Animation<Offset> translateAnimation = controller
         .drive(translateTween.chain(CurveTween(curve: Curves.easeOutBack)));
@@ -106,10 +94,9 @@ class CardAnimator {
   }
 
   runExitAnimation(Offset positionOfCurrentlyViewingCard) {
-    inverseAnimationDetails();
-    adjustExitAnimationForNewCard(positionOfCurrentlyViewingCard);
+    inverseAnimationDetails(positionOfCurrentlyViewingCard);
     controller.forward().whenCompleteOrCancel(() {
-      inverseAnimationDetails();
+      inverseAnimationDetails(null);
       controller.reset();
     });
   }
