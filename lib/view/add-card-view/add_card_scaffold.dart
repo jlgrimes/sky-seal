@@ -7,6 +7,10 @@ import 'dart:async';
 import 'package:sky_seal/view/add-card-view/CardPreview.dart';
 
 class AddCardScaffold extends StatefulWidget {
+  final Function(String code) addCardCallback;
+
+  AddCardScaffold({required this.addCardCallback});
+
   @override
   State<AddCardScaffold> createState() => _AddCardScaffoldState();
 }
@@ -81,7 +85,15 @@ class _AddCardScaffoldState extends State<AddCardScaffold> {
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               crossAxisCount: 2,
-              children: _results.map((e) => Image.network(e.imgUrl)).toList()),
+              children: _results
+                  .map((e) => GestureDetector(
+                        onTap: () {
+                          widget.addCardCallback(e.code);
+                          Navigator.pop(context);
+                        },
+                        child: Image.network(e.imgUrl),
+                      ))
+                  .toList()),
         )
       ])),
     );

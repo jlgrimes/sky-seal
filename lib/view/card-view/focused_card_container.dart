@@ -1,6 +1,7 @@
 import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sky_seal/structs/Card.dart';
 import 'package:sky_seal/view/card-view/card_animator.dart';
 import 'package:sky_seal/view/card-view/card_stack_view.dart';
 import 'package:sky_seal/view/card-view/card_stack_view_overlay.dart';
@@ -9,9 +10,9 @@ import 'package:sky_seal/view/primatives/card_view.dart';
 import 'package:sky_seal/view/state/app_state_provider.dart';
 
 class FocusedCardContainer extends StatefulWidget {
-  final String code;
+  final PokemonCard card;
 
-  const FocusedCardContainer({Key? key, required this.code});
+  const FocusedCardContainer({Key? key, required this.card});
 
   @override
   _FocusedMenuHolderState createState() => _FocusedMenuHolderState();
@@ -47,7 +48,7 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
     AppStateProvider appState =
         Provider.of<AppStateProvider>(context, listen: false);
 
-    appState.cardPositionState.addCardPosition(widget.code, offset);
+    appState.cardPositionState.addCardPosition(widget.card.code, offset);
   }
 
   @override
@@ -71,7 +72,7 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
         onTap: () async {
           getOffsetAndDeclareAnimations(context);
           appState.setDeckViewState(DeckViewState.enteringCardFocus);
-          appState.setCurrentlyViewingCard(widget.code);
+          appState.setCurrentlyViewingCard(widget.card.code);
 
           Future.delayed(const Duration(milliseconds: 300), () {
             //asynchronous delay
@@ -90,17 +91,17 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
                     return FadeTransition(
                         opacity: animation,
                         child: CardStackViewOverlay(
-                          code: widget.code,
-                          menuContent: CardStackView(widget.code),
+                          code: widget.card.code,
+                          menuContent: CardStackView(widget.card.code),
                           childOffset: childOffset,
                           childSize: childSize!,
                           cardAnimator: cardAnimator,
-                          child: WhoopCardView(widget.code),
+                          child: WhoopCardView(widget.card.code),
                         ));
                   },
                   fullscreenDialog: true,
                   opaque: false));
         },
-        child: CardView(widget.code));
+        child: CardView(widget.card.code));
   }
 }

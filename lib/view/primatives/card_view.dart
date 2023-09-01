@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sky_seal/structs/Card.dart';
 import 'package:sky_seal/util/sets.dart';
 import 'package:sky_seal/view/primatives/constants.dart';
 

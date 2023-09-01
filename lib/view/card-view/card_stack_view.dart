@@ -8,19 +8,15 @@ import 'package:sky_seal/view/state/app_state_provider.dart';
 
 class CardStackView extends StatelessWidget {
   late String startingCode;
-  List<String> cards = myDeckList;
   late int codeIdx;
 
-  CardStackView(this.startingCode) {
-    // This should not happen help
-    if (!cards.contains(startingCode)) return;
-    codeIdx = cards.indexOf(startingCode);
-  }
+  CardStackView(this.startingCode);
 
   @override
   Widget build(BuildContext context) {
-    AppStateProvider appState =
-        Provider.of<AppStateProvider>(context, listen: false);
+    AppStateProvider appState = Provider.of<AppStateProvider>(context);
+    codeIdx =
+        appState.deck.cards.indexWhere((card) => card.code == startingCode);
 
     return Container(
       child: Column(children: [
@@ -34,16 +30,17 @@ class CardStackView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          child: CardView(cards[index]),
                           width: 400 * cardAspectRatio,
+                          child: CardView(appState.deck.cards[index].code),
                         )
                       ]);
                 },
-                itemCount: cards.length,
+                itemCount: appState.deck.cards.length,
                 control: SwiperControl(),
                 index: codeIdx,
                 onIndexChanged: ((value) {
-                  appState.sneakilySetCurrentlyViewingCard(cards[value]);
+                  appState.sneakilySetCurrentlyViewingCard(
+                      appState.deck.cards[value].code);
                   codeIdx = value;
                 }),
                 loop: false,

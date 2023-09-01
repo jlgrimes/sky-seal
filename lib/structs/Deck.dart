@@ -2,7 +2,7 @@
 import 'package:sky_seal/structs/Card.dart';
 
 class Deck {
-  List<Card> cards;
+  List<PokemonCard> cards;
 
   Deck({required this.cards});
 }

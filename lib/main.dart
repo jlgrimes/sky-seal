@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sky_seal/structs/Card.dart';
+import 'package:sky_seal/structs/Deck.dart';
 import 'package:sky_seal/view/add-card-view/add_card_scaffold.dart';
 import 'package:sky_seal/view/deck-view/deck_view.dart';
 import 'package:sky_seal/view/state/app_state_provider.dart';
@@ -38,16 +40,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    AppStateProvider appState =
+        Provider.of<AppStateProvider>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -61,8 +58,12 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => AddCardScaffold()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AddCardScaffold(
+                        addCardCallback: appState.addCardToDeck,
+                      )));
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
