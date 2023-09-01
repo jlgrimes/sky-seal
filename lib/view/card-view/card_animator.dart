@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:sky_seal/view/state/app_state_provider.dart';
+import 'package:sky_seal/view/card-view/constants.dart';
 
 enum CardAnimationType { enter, exit }
 
@@ -33,7 +32,7 @@ class CardAnimator {
     bool cardIsEntering = (animationType == CardAnimationType.enter);
 
     // For the zoom in animation
-    double scale = 2.2;
+    double scale = desiredFinalWidth / size.width;
     Tween<double> scaleTween;
     if (cardIsEntering) {
       scaleTween = Tween(begin: 1, end: scale);

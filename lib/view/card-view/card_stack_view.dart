@@ -2,6 +2,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sky_seal/util/deck.dart';
+import 'package:sky_seal/view/card-view/constants.dart';
 import 'package:sky_seal/view/primatives/card_view.dart';
 import 'package:sky_seal/view/primatives/constants.dart';
 import 'package:sky_seal/view/state/app_state_provider.dart';
@@ -30,7 +31,7 @@ class CardStackView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          width: 400 * cardAspectRatio,
+                          width: desiredFinalWidth,
                           child: CardView(appState.deck.cards[index].code),
                         )
                       ]);

@@ -43,7 +43,12 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
       childSize = size;
     });
 
-    cardAnimator.computeAnimationDetails(context, renderBox, size, offset);
+    cardAnimator.computeAnimationDetails(
+      context,
+      renderBox,
+      size,
+      offset,
+    );
 
     AppStateProvider appState =
         Provider.of<AppStateProvider>(context, listen: false);
