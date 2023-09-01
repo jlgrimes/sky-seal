@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:provider/provider.dart' as provider;
+import 'package:sky_seal/structs/Deck.dart';
 import 'package:sky_seal/view/add-card-view/add_card_scaffold.dart';
 import 'package:sky_seal/view/deck-view/deck_view.dart';
 import 'package:sky_seal/view/state/app_state_provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DeckBuilder extends StatefulWidget {
   @override
@@ -10,10 +12,20 @@ class DeckBuilder extends StatefulWidget {
 }
 
 class _DeckBuilderState extends State<DeckBuilder> {
+  saveDeck(Deck currentDeck) async {
+    final List<Map<String, dynamic>> data = await Supabase.instance.client
+        .from('decks')
+        .insert({'name': 'My deck'}).select();
+    final deckId = data[0]['id'];
+    await Supabase.instance.client.from('cards').insert(currentDeck.cards
+        .map((e) => ({'code': e.code, 'count': e.count, 'deck_id': deckId}))
+        .toList());
+  }
+
   @override
   Widget build(BuildContext context) {
     AppStateProvider appState =
-        Provider.of<AppStateProvider>(context, listen: false);
+        provider.Provider.of<AppStateProvider>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -45,7 +57,12 @@ class _DeckBuilderState extends State<DeckBuilder> {
             child: Row(
           children: [
             IconButton(
-                onPressed: () => {}, icon: const Icon(Icons.save_outlined))
+                onPressed: () async {
+                  await saveDeck(appState.deck);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Deck saved')));
+                },
+                icon: const Icon(Icons.save_outlined))
           ],
         )),
       ),
