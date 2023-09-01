@@ -33,6 +33,7 @@ class CardStackViewOverlay extends StatefulWidget {
 class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
   DeckViewState _deckViewState = DeckViewState.exitingCardFocus;
   final SwiperController _swiperController = SwiperController();
+  int? _codeIdx;
   late int _tempCount;
 
   @override
@@ -68,11 +69,10 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
   @override
   Widget build(BuildContext context) {
     AppStateProvider appState = Provider.of<AppStateProvider>(context);
-
-    final codeIdx =
-        appState.deck.cards.indexWhere((card) => card.code == widget.card.code);
-
     Size size = MediaQuery.of(context).size;
+
+    int codeIdx = _codeIdx ??
+        appState.deck.cards.indexWhere((card) => card.code == widget.card.code);
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -157,6 +157,9 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
                                     onIndexChanged: ((value) {
                                       appState.sneakilySetCurrentlyViewingCard(
                                           appState.deck.cards[value].code);
+                                      setState(() {
+                                        _codeIdx = value;
+                                      });
                                     }),
                                     controller: _swiperController,
                                     loop: false,
@@ -194,7 +197,7 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
                                     alignment: Alignment.bottomCenter,
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.center,
                                       children: [
                                         IconButton.filled(
                                           onPressed: () => subtractOneCopy(),
