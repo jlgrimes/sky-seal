@@ -22,6 +22,7 @@ dependencies:
   indexed: ^0.0.8
   after_layout: ^1.2.0
   http: ^1.1.0
+  supabase_flutter: ^1.10.14
 
 dev_dependencies:
   flutter_test:
