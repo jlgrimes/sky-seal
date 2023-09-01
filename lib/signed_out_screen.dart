@@ -21,12 +21,9 @@ Future<AuthResponse> signInWithGoogle() async {
   ///
   /// Client ID that you registered with Google Cloud.
   /// You will have two different values for iOS and Android.
-  String? clientId = Platform.isIOS
+  String clientId = Platform.isIOS
       ? '10007324611-3q3j2p3m76jguirophir91d7vrgtagcp.apps.googleusercontent.com'
-      : Platform.isAndroid
-          ? '10007324611-3q3j2p3m76jguirophir91d7vrgtagcp.apps.googleusercontent.com'
-          : null;
-  if (clientId == null) throw 'This is not a supported platform for login';
+      : '10007324611-r43e1b65jacughbdkk8ed143cr99879g.apps.googleusercontent.com';
 
   /// reverse DNS form of the client ID + `:/` is set as the redirect URL
   final redirectUrl = '${clientId.split('.').reversed.join('.')}:/';

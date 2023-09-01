@@ -50,7 +50,7 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         manifestPlaceholders += [
-        'appAuthRedirectScheme': 'com.googleusercontent.apps.*account_id*'
+        'appAuthRedirectScheme': 'com.googleusercontent.apps.10007324611-r43e1b65jacughbdkk8ed143cr99879g'
         ]
     }
 
