@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:sky_seal/auth_controller.dart';
+import 'package:sky_seal/deck_builder.dart';
 import 'package:sky_seal/home_page.dart';
 import 'package:sky_seal/signed_out_screen.dart';
 import 'package:sky_seal/view/state/app_state_provider.dart';
@@ -16,6 +18,20 @@ Future<void> main() async {
   );
   runApp(const MyApp());
 }
+
+ /// This handles '/' and '/details'.
+ final router = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/deck/:deckid',
+      builder: (context, state) {
+        // use state.params to get router parameter values
+        final deckId = state.pathParameters['deckid'];
+        return DeckBuilder();
+      },
+    ),
+  ]
+);
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
