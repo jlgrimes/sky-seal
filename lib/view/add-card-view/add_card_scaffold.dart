@@ -67,14 +67,14 @@ class _AddCardScaffoldState extends State<AddCardScaffold> {
     return Scaffold(
       body: Container(
           child: Column(children: [
-        SearchBar(
+        TextField(
           controller: _searchController,
-          leading: const Icon(Icons.search),
-          trailing: [
-            IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () => Navigator.pop(context))
-          ],
+          autofocus: true,
+          decoration: InputDecoration(
+              suffixIcon: IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () => Navigator.pop(context)),
+              prefixIcon: const Icon(Icons.search)),
         ),
         Expanded(
           child: GridView.count(
