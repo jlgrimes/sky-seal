@@ -38,6 +38,7 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
   @override
   void initState() {
     super.initState(); //when this route starts, it will execute this code
+    _tempCount = widget.card.count;
 
     Future.delayed(const Duration(milliseconds: 300), () {
       //asynchronous delay
@@ -49,6 +50,18 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
               .enteringCardFocus; //update the variable declare this under your class so its accessible for both your widget build and initState which is located under widget build{}
         });
       }
+    });
+  }
+
+  addOneCopy() {
+    setState(() {
+      _tempCount += 1;
+    });
+  }
+
+  subtractOneCopy() {
+    setState(() {
+      _tempCount -= 1;
     });
   }
 
@@ -172,6 +185,38 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
                                           icon: const Icon(
                                               Icons.chevron_right_rounded),
                                           iconSize: 40.0,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.all(64.0),
+                                    alignment: Alignment.bottomCenter,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        IconButton.filled(
+                                          onPressed: () => subtractOneCopy(),
+                                          icon: const Icon(Icons.remove),
+                                          iconSize: 32.0,
+                                        ),
+                                        FilledButton.tonal(
+                                          onPressed: () => {},
+                                          style: FilledButton.styleFrom(
+                                              shape: CircleBorder(),
+                                              padding: EdgeInsets.all(30.0)),
+                                          child: Text(
+                                            _tempCount.toString(),
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                            textScaleFactor: 4,
+                                          ),
+                                        ),
+                                        IconButton.filled(
+                                          onPressed: () => addOneCopy(),
+                                          icon: const Icon(Icons.add),
+                                          iconSize: 32.0,
                                         )
                                       ],
                                     ),
