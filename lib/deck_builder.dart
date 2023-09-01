@@ -26,7 +26,7 @@ class _DeckBuilderState extends State<DeckBuilder> {
           children: <Widget>[DeckView()],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.push(
               context,
@@ -35,8 +35,20 @@ class _DeckBuilderState extends State<DeckBuilder> {
                         addCardCallback: appState.addCardToDeck,
                       )));
         },
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        label: const Text('Add card'),
+        icon: const Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
+      bottomNavigationBar: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        child: BottomAppBar(
+            child: Row(
+          children: [
+            IconButton(
+                onPressed: () => {}, icon: const Icon(Icons.save_outlined))
+          ],
+        )),
+      ),
     );
   }
 }
