@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
+
+import 'package:sky_seal/view/add-card-view/CardPreview.dart';
 
 class AddCardScaffold extends StatefulWidget {
   @override
@@ -10,6 +14,7 @@ class AddCardScaffold extends StatefulWidget {
 class _AddCardScaffoldState extends State<AddCardScaffold> {
   final TextEditingController _searchController = TextEditingController();
   bool _isLoading = false;
+  List<CardPreview> _results = [];
   Timer? _debounce;
 
   @override
@@ -19,6 +24,8 @@ class _AddCardScaffoldState extends State<AddCardScaffold> {
   }
 
   _onSearchChanged() {
+    if (_searchController.text.length < 3) return;
+
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 500), () {
       _performSearch();
@@ -32,29 +39,40 @@ class _AddCardScaffoldState extends State<AddCardScaffold> {
 
     //Simulates waiting for an API call
     final http.Response response = await http.get(Uri.parse(
-        'https://api.pokemontcg.io/v2/cards?q=name:${_searchController.text}'));
-    final data = response.body;
-    debugPrint(data);
+        'https://api.pokemontcg.io/v2/cards?q=name:"${_searchController.text}"&pageSize=9'));
+
+    // Put a sad face on the screen or something
+    if (response.statusCode == 400) return;
+
+    final Map<String, dynamic> data = json.decode(response.body);
+    final List<Map<String, dynamic>> cardList =
+        List<Map<String, dynamic>>.from(data['data']);
+    final List<CardPreview> cards = cardList
+        .map((card) =>
+            CardPreview(code: card['id'], imgUrl: card['images']['large']))
+        .toList();
 
     // await Future.delayed(const Duration(milliseconds: 1000));
 
-    // setState(() {
-    //   _filteredData = _data
-    //       .where((element) => element
-    //           .toLowerCase()
-    //           .contains(_searchController.text.toLowerCase()))
-    //       .toList();
-    //   _isLoading = false;
-    // });
+    setState(() {
+      _results = cards;
+      _isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
-            child: Container(
-                child: TextField(
-      controller: _searchController,
-    ))));
+            child: Column(children: [
+      TextField(
+        controller: _searchController,
+      ),
+      GridView.count(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          crossAxisCount: 3,
+          children: _results.map((e) => Image.network(e.imgUrl)).toList())
+    ])));
   }
 }
