@@ -69,7 +69,7 @@ class _AddCardScaffoldState extends State<AddCardScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: SafeArea(child: Container(
           child: Column(children: [
         TextField(
           controller: _searchController,
@@ -95,7 +95,7 @@ class _AddCardScaffoldState extends State<AddCardScaffold> {
                       ))
                   .toList()),
         )
-      ])),
+      ])))
     );
   }
 }
