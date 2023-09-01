@@ -25,6 +25,7 @@ dependencies:
   supabase_flutter: ^1.10.14
   flutter_appauth: ^6.0.2
   crypto: ^3.0.3
+  share_plus: ^7.1.0
 
 dev_dependencies:
   flutter_test:
