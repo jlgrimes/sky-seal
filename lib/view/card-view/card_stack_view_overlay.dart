@@ -156,6 +156,7 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay>
                                           appState.deck.cards[value].code);
                                     }),
                                     controller: _swiperController,
+                                    duration: 200,
                                     loop: false,
                                   ),
                                   Container(
