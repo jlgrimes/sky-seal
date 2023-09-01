@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:after_layout/after_layout.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,17 +31,15 @@ class CardStackViewOverlay extends StatefulWidget {
   State<CardStackViewOverlay> createState() => _CardStackViewOverlayState();
 }
 
-class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
+class _CardStackViewOverlayState extends State<CardStackViewOverlay>
+    with AfterLayoutMixin<CardStackViewOverlay> {
   DeckViewState _deckViewState = DeckViewState.exitingCardFocus;
   final SwiperController _swiperController = SwiperController();
-  int? _codeIdx;
-  late int _tempCount;
+  int _tempIndex = 0;
 
   @override
   void initState() {
     super.initState(); //when this route starts, it will execute this code
-    _tempCount = widget.card.count;
-
     Future.delayed(const Duration(milliseconds: 300), () {
       //asynchronous delay
       if (this.mounted) {
@@ -54,15 +53,13 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
     });
   }
 
-  addOneCopy() {
+  @override
+  void afterFirstLayout(BuildContext context) {
+    AppStateProvider appState =
+        Provider.of<AppStateProvider>(context, listen: false);
     setState(() {
-      _tempCount += 1;
-    });
-  }
-
-  subtractOneCopy() {
-    setState(() {
-      _tempCount -= 1;
+      _tempIndex = appState.deck.cards
+          .indexWhere((card) => card.code == widget.card.code);
     });
   }
 
@@ -70,9 +67,6 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
   Widget build(BuildContext context) {
     AppStateProvider appState = Provider.of<AppStateProvider>(context);
     Size size = MediaQuery.of(context).size;
-
-    int codeIdx = _codeIdx ??
-        appState.deck.cards.indexWhere((card) => card.code == widget.card.code);
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -153,13 +147,13 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
                                           ]);
                                     },
                                     itemCount: appState.deck.cards.length,
-                                    index: codeIdx,
+                                    index: _tempIndex,
                                     onIndexChanged: ((value) {
+                                      setState(() {
+                                        _tempIndex = value;
+                                      });
                                       appState.sneakilySetCurrentlyViewingCard(
                                           appState.deck.cards[value].code);
-                                      setState(() {
-                                        _codeIdx = value;
-                                      });
                                     }),
                                     controller: _swiperController,
                                     loop: false,
@@ -172,7 +166,7 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         IconButton.filledTonal(
-                                          onPressed: codeIdx == 0
+                                          onPressed: _tempIndex == 0
                                               ? null
                                               : () =>
                                                   _swiperController.previous(),
@@ -181,7 +175,7 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
                                           iconSize: 40.0,
                                         ),
                                         IconButton.filledTonal(
-                                          onPressed: codeIdx ==
+                                          onPressed: _tempIndex ==
                                                   appState.deck.cards.length - 1
                                               ? null
                                               : () => _swiperController.next(),
@@ -199,27 +193,38 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        IconButton.filled(
-                                          onPressed: () => subtractOneCopy(),
+                                        IconButton.outlined(
+                                          onPressed: () =>
+                                              appState.updateCardCount(
+                                                  _tempIndex,
+                                                  appState
+                                                          .deck
+                                                          .cards[_tempIndex]
+                                                          .count -
+                                                      1),
                                           icon: const Icon(Icons.remove),
-                                          iconSize: 32.0,
                                         ),
-                                        FilledButton.tonal(
-                                          onPressed: () => {},
-                                          style: FilledButton.styleFrom(
-                                              shape: CircleBorder(),
-                                              padding: EdgeInsets.all(30.0)),
-                                          child: Text(
-                                            _tempCount.toString(),
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                            textScaleFactor: 4,
-                                          ),
+                                        const SizedBox(
+                                          width: 20.0,
                                         ),
-                                        IconButton.filled(
-                                          onPressed: () => addOneCopy(),
+                                        Text(
+                                          appState.deck.cards[_tempIndex].count
+                                              .toString(),
+                                          textScaleFactor: 3.5,
+                                        ),
+                                        const SizedBox(
+                                          width: 20.0,
+                                        ),
+                                        IconButton.outlined(
+                                          onPressed: () =>
+                                              appState.updateCardCount(
+                                                  _tempIndex,
+                                                  appState
+                                                          .deck
+                                                          .cards[_tempIndex]
+                                                          .count +
+                                                      1),
                                           icon: const Icon(Icons.add),
-                                          iconSize: 32.0,
                                         )
                                       ],
                                     ),

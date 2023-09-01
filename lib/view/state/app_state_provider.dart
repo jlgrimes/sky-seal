@@ -36,6 +36,11 @@ class AppStateProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  updateCardCount(int cardIdx, int newCount) {
+    deck.cards[cardIdx].count = newCount;
+    notifyListeners();
+  }
+
   loadDeck(List<Map<String, dynamic>> cards, String deckId) {
     final cardList = cards
         .map(
