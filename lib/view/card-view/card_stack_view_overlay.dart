@@ -1,23 +1,25 @@
 import 'dart:ui';
 
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sky_seal/structs/Card.dart';
 import 'package:sky_seal/view/card-view/card_animator.dart';
+import 'package:sky_seal/view/card-view/constants.dart';
 import 'package:sky_seal/view/card-view/whoop_card_view_overlay.dart';
+import 'package:sky_seal/view/primatives/card_view.dart';
 import 'package:sky_seal/view/state/app_state_provider.dart';
 
 class CardStackViewOverlay extends StatefulWidget {
-  final String code;
+  final PokemonCard card;
   final Offset childOffset;
   final Size childSize;
-  final Widget menuContent;
   final Widget child;
   final CardAnimator cardAnimator;
 
   CardStackViewOverlay(
       {Key? key,
-      required this.code,
-      required this.menuContent,
+      required this.card,
       required this.childOffset,
       required this.childSize,
       required this.child,
@@ -30,10 +32,13 @@ class CardStackViewOverlay extends StatefulWidget {
 
 class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
   DeckViewState _deckViewState = DeckViewState.exitingCardFocus;
+  final SwiperController _swiperController = SwiperController();
+  late int _tempCount;
 
   @override
   void initState() {
     super.initState(); //when this route starts, it will execute this code
+
     Future.delayed(const Duration(milliseconds: 300), () {
       //asynchronous delay
       if (this.mounted) {
@@ -51,10 +56,22 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
   Widget build(BuildContext context) {
     AppStateProvider appState = Provider.of<AppStateProvider>(context);
 
+    final codeIdx =
+        appState.deck.cards.indexWhere((card) => card.code == widget.card.code);
+
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: Colors.transparent,
+      // bottomNavigationBar: BottomAppBar(
+      //   child: Row(children: [
+      //     IconButton(
+      //         onPressed: (() => setState(() {
+      //               _tempCount += 1;
+      //             })),
+      //         icon: const Icon(Icons.add))
+      //   ]),
+      // ),
       body: Container(
         child: Stack(
           fit: StackFit.expand,
@@ -90,16 +107,81 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay> {
                         // appState
                         //     .setDeckViewState(DeckViewState.exitingCardFocus);
                         //widget.cardAnimator.controller.reverse();
-                        widget.cardAnimator.runExitAnimation(
-                            appState.cardPositionState.getCardPosition(
-                                appState.currentlyViewingCard ?? widget.code));
+                        widget.cardAnimator.runExitAnimation(appState
+                            .cardPositionState
+                            .getCardPosition(appState.currentlyViewingCard ??
+                                widget.card.code));
                         Future.delayed(Duration(milliseconds: 200), () {
                           Navigator.pop(context);
                           // appState
                           //     .setDeckViewState(DeckViewState.noCardsFocused);
                         });
                       },
-                      child: widget.menuContent)),
+                      child: Container(
+                        child: Column(children: [
+                          (Expanded(
+                              child: Column(
+                            children: [
+                              Flexible(
+                                  child: Stack(
+                                children: [
+                                  Swiper(
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: desiredFinalWidth,
+                                              child: CardView(appState
+                                                  .deck.cards[index].code),
+                                            )
+                                          ]);
+                                    },
+                                    itemCount: appState.deck.cards.length,
+                                    index: codeIdx,
+                                    onIndexChanged: ((value) {
+                                      appState.sneakilySetCurrentlyViewingCard(
+                                          appState.deck.cards[value].code);
+                                    }),
+                                    controller: _swiperController,
+                                    loop: false,
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.all(8.0),
+                                    alignment: Alignment.center,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        IconButton.filledTonal(
+                                          onPressed: codeIdx == 0
+                                              ? null
+                                              : () =>
+                                                  _swiperController.previous(),
+                                          icon: const Icon(
+                                              Icons.chevron_left_rounded),
+                                          iconSize: 40.0,
+                                        ),
+                                        IconButton.filledTonal(
+                                          onPressed: codeIdx ==
+                                                  appState.deck.cards.length - 1
+                                              ? null
+                                              : () => _swiperController.next(),
+                                          icon: const Icon(
+                                              Icons.chevron_right_rounded),
+                                          iconSize: 40.0,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ))
+                            ],
+                          )))
+                        ]),
+                      ))),
             )
           ],
         ),

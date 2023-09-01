@@ -3,6 +3,8 @@ import 'package:sky_seal/view/card-view/constants.dart';
 
 enum CardAnimationType { enter, exit }
 
+const bottomAppBarOffset = 0.0;
+
 class CardAnimationDetails {
   Tween<double> scaleTween;
   Tween<Offset> translateTween;
@@ -43,7 +45,8 @@ class CardAnimator {
     Size windowSize = MediaQuery.of(context).size;
 
     final double xTranslate = (windowSize.width / 2) - size.width / 2;
-    final double yTranslate = (windowSize.height / 2) - size.height / 2;
+    final double yTranslate =
+        (windowSize.height / 2) - size.height / 2 - bottomAppBarOffset;
 
     Offset startingOffset = Offset(offset.dx, offset.dy);
     Offset finalOffset = Offset(xTranslate, yTranslate);

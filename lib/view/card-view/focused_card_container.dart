@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sky_seal/structs/Card.dart';
 import 'package:sky_seal/view/card-view/card_animator.dart';
-import 'package:sky_seal/view/card-view/card_stack_view.dart';
 import 'package:sky_seal/view/card-view/card_stack_view_overlay.dart';
 import 'package:sky_seal/view/card-view/whoop_card_view.dart';
 import 'package:sky_seal/view/primatives/card_view.dart';
@@ -96,10 +95,7 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
                     return FadeTransition(
                         opacity: animation,
                         child: CardStackViewOverlay(
-                          code: widget.card.code,
-                          menuContent: CardStackView(appState.deck.cards
-                              .indexWhere(
-                                  (card) => card.code == widget.card.code)),
+                          card: widget.card,
                           childOffset: childOffset,
                           childSize: childSize!,
                           cardAnimator: cardAnimator,
