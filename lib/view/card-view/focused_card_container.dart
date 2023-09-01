@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sky_seal/structs/Card.dart';
 import 'package:sky_seal/view/card-view/card_animator.dart';
 import 'package:sky_seal/view/card-view/card_stack_view_overlay.dart';
+import 'package:sky_seal/view/card-view/card_view_with_count.dart';
 import 'package:sky_seal/view/card-view/whoop_card_view.dart';
 import 'package:sky_seal/view/primatives/card_view.dart';
 import 'package:sky_seal/view/state/app_state_provider.dart';
@@ -105,6 +106,6 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
                   fullscreenDialog: true,
                   opaque: false));
         },
-        child: CardView(widget.card.code));
+        child: CardViewWithCount(pokemonCard: widget.card));
   }
 }
