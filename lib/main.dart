@@ -23,7 +23,7 @@ Future<void> main() async {
  final router = GoRouter(
   routes: [
     GoRoute(
-      path: '/deck/:deckid',
+      path: '/:deckid',
       builder: (context, state) {
         // use state.params to get router parameter values
         final deckId = state.pathParameters['deckid'];
