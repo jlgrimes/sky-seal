@@ -13,13 +13,20 @@ class DeckBuilder extends StatefulWidget {
 
 class _DeckBuilderState extends State<DeckBuilder> {
   saveDeck(Deck currentDeck) async {
-    final List<Map<String, dynamic>> data = await Supabase.instance.client
-        .from('decks')
-        .insert({'name': 'My deck'}).select();
-    final deckId = data[0]['id'];
-    await Supabase.instance.client.from('cards').insert(currentDeck.cards
-        .map((e) => ({'code': e.code, 'count': e.count, 'deck_id': deckId}))
-        .toList());
+    try {
+      String? userId = Supabase.instance.client.auth.currentUser?.id;
+      if (userId == null) throw 'User is not logged in and cannot save decks';
+
+      final List<Map<String, dynamic>> data = await Supabase.instance.client
+          .from('decks')
+          .insert({'name': 'My deck', 'owner': userId}).select();
+      final deckId = data[0]['id'];
+      await Supabase.instance.client.from('cards').insert(currentDeck.cards
+          .map((e) => ({'code': e.code, 'count': e.count, 'deck_id': deckId}))
+          .toList());
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   @override
