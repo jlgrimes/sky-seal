@@ -97,7 +97,9 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
                         opacity: animation,
                         child: CardStackViewOverlay(
                           code: widget.card.code,
-                          menuContent: CardStackView(widget.card.code),
+                          menuContent: CardStackView(appState.deck.cards
+                              .indexWhere(
+                                  (card) => card.code == widget.card.code)),
                           childOffset: childOffset,
                           childSize: childSize!,
                           cardAnimator: cardAnimator,
