@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sky_seal/deck_builder.dart';
+import 'package:sky_seal/structs/Card.dart';
+import 'package:sky_seal/structs/Deck.dart';
 import 'package:sky_seal/view/state/app_state_provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as supa;
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -11,6 +14,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final _future = supa.Supabase.instance.client
+      .from('decks')
+      .select<List<Map<String, dynamic>>>()
+      .eq('owner', supa.Supabase.instance.client.auth.currentUser?.id);
+
   @override
   Widget build(BuildContext context) {
     AppStateProvider appState =
@@ -20,11 +28,37 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[Text('Hi! Click the plus button to make a deck')],
-        ),
+      body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: _future,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          final decks = snapshot.data!;
+          return ListView.builder(
+            itemCount: decks.length,
+            itemBuilder: ((context, index) {
+              final thisDeck = decks[index];
+              return ListTile(
+                title: Text(thisDeck['name']),
+                onTap: () async {
+                  final cards = await supa.Supabase.instance.client
+                      .from('cards')
+                      .select<List<Map<String, dynamic>>>()
+                      .eq('deck_id', thisDeck['id']);
+                  final cardList = cards
+                      .map((e) =>
+                          PokemonCard(code: e['code'], count: e['count']))
+                      .toList();
+
+                  appState.loadDeck(Deck(cards: cardList));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => DeckBuilder()));
+                },
+              );
+            }),
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {

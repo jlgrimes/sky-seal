@@ -35,4 +35,9 @@ class AppStateProvider extends ChangeNotifier {
     deck = Deck(cards: [...deck.cards, PokemonCard(code: code, count: 1)]);
     notifyListeners();
   }
+
+  loadDeck(Deck loadingDeck) {
+    deck = loadingDeck;
+    notifyListeners();
+  }
 }
