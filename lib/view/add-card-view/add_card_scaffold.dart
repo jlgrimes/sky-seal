@@ -33,13 +33,15 @@ class _AddCardScaffoldState extends State<AddCardScaffold> {
   }
 
   Future<void> _performSearch() async {
+    if (!mounted) return;
+
     setState(() {
       _isLoading = true;
     });
 
     //Simulates waiting for an API call
     final http.Response response = await http.get(Uri.parse(
-        'https://api.pokemontcg.io/v2/cards?q=name:"${_searchController.text}"&pageSize=9'));
+        'https://api.pokemontcg.io/v2/cards?q=name:"${_searchController.text}"&pageSize=9&orderBy=-set.releaseDate'));
 
     // Put a sad face on the screen or something
     if (response.statusCode == 400) return;
@@ -63,16 +65,25 @@ class _AddCardScaffoldState extends State<AddCardScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-            child: Column(children: [
-      TextField(
-        controller: _searchController,
-      ),
-      GridView.count(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          crossAxisCount: 3,
-          children: _results.map((e) => Image.network(e.imgUrl)).toList())
-    ])));
+      body: Container(
+          child: Column(children: [
+        SearchBar(
+          controller: _searchController,
+          leading: const Icon(Icons.search),
+          trailing: [
+            IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () => Navigator.pop(context))
+          ],
+        ),
+        Expanded(
+          child: GridView.count(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              crossAxisCount: 2,
+              children: _results.map((e) => Image.network(e.imgUrl)).toList()),
+        )
+      ])),
+    );
   }
 }
