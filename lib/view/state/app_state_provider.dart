@@ -32,12 +32,17 @@ class AppStateProvider extends ChangeNotifier {
   }
 
   addCardToDeck(String code) {
-    deck = Deck(cards: [...deck.cards, PokemonCard(code: code, count: 1)]);
+    deck.addCard(code);
     notifyListeners();
   }
 
-  loadDeck(Deck loadingDeck) {
-    deck = loadingDeck;
+  loadDeck(List<Map<String, dynamic>> cards, String deckId) {
+    final cardList = cards
+        .map(
+            (e) => PokemonCard(id: e['id'], code: e['code'], count: e['count']))
+        .toList();
+    deck = Deck(cards: cardList, id: deckId);
+
     notifyListeners();
   }
 }

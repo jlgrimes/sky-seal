@@ -39,19 +39,17 @@ class _MyHomePageState extends State<MyHomePage> {
             itemCount: decks.length,
             itemBuilder: ((context, index) {
               final thisDeck = decks[index];
+              final thisDeckId = thisDeck['id'];
+
               return ListTile(
                 title: Text(thisDeck['name']),
                 onTap: () async {
                   final cards = await supa.Supabase.instance.client
                       .from('cards')
                       .select<List<Map<String, dynamic>>>()
-                      .eq('deck_id', thisDeck['id']);
-                  final cardList = cards
-                      .map((e) =>
-                          PokemonCard(code: e['code'], count: e['count']))
-                      .toList();
+                      .eq('deck_id', thisDeckId);
 
-                  appState.loadDeck(Deck(cards: cardList));
+                  appState.loadDeck(cards, thisDeckId);
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => DeckBuilder()));
                 },

@@ -12,27 +12,9 @@ class DeckBuilder extends StatefulWidget {
 }
 
 class _DeckBuilderState extends State<DeckBuilder> {
-  saveDeck(Deck currentDeck) async {
-    try {
-      String? userId = Supabase.instance.client.auth.currentUser?.id;
-      if (userId == null) throw 'User is not logged in and cannot save decks';
-
-      final List<Map<String, dynamic>> data = await Supabase.instance.client
-          .from('decks')
-          .insert({'name': 'My deck', 'owner': userId}).select();
-      final deckId = data[0]['id'];
-      await Supabase.instance.client.from('cards').insert(currentDeck.cards
-          .map((e) => ({'code': e.code, 'count': e.count, 'deck_id': deckId}))
-          .toList());
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    AppStateProvider appState =
-        provider.Provider.of<AppStateProvider>(context, listen: false);
+    AppStateProvider appState = provider.Provider.of<AppStateProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -65,9 +47,56 @@ class _DeckBuilderState extends State<DeckBuilder> {
           children: [
             IconButton(
                 onPressed: () async {
-                  await saveDeck(appState.deck);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Deck saved')));
+                  try {
+                    String? userId =
+                        Supabase.instance.client.auth.currentUser?.id;
+                    if (userId == null)
+                      throw 'User is not logged in and cannot save decks';
+
+                    String? deckId = appState.deck.id;
+                    if (deckId == null) {
+                      final List<Map<String, dynamic>> data =
+                          await Supabase.instance.client.from('decks').insert(
+                              {'name': 'My deck', 'owner': userId}).select();
+                      deckId = data[0]['id'];
+                    }
+
+                    List<Map<String, dynamic>> cardsToBeInserted = [];
+                    List<Map<String, dynamic>> cardsToBeUpserted = [];
+
+                    appState.deck.cards.forEach((element) {
+                      if (element.id == null) {
+                        cardsToBeInserted.add({
+                          'code': element.code,
+                          'count': element.count,
+                          'deck_id': deckId
+                        });
+                      } else {
+                        cardsToBeUpserted.add({
+                          'id': element.id,
+                          'code': element.code,
+                          'count': element.count,
+                          'deck_id': deckId
+                        });
+                      }
+                    });
+
+                    final insertedCards = await Supabase.instance.client
+                        .from('cards')
+                        .insert(cardsToBeInserted)
+                        .select<List<Map<String, dynamic>>>();
+
+                    final upsertedCards = await Supabase.instance.client
+                        .from('cards')
+                        .upsert(cardsToBeUpserted)
+                        .select<List<Map<String, dynamic>>>();
+                    appState.loadDeck(
+                        [...insertedCards, ...upsertedCards], deckId!);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Deck saved')));
+                  } catch (e) {
+                    debugPrint(e.toString());
+                  }
                 },
                 icon: const Icon(Icons.save_outlined))
           ],
