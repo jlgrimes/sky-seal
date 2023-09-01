@@ -4,8 +4,7 @@ import 'package:sky_seal/deck_builder.dart';
 import 'package:sky_seal/view/state/app_state_provider.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -20,7 +19,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
       ),
       body: const Center(
         child: Column(

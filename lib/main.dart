@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sky_seal/auth_controller.dart';
+import 'package:sky_seal/home_page.dart';
 import 'package:sky_seal/signed_out_screen.dart';
 import 'package:sky_seal/view/state/app_state_provider.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await supabase.Supabase.initialize(
+  await Supabase.initialize(
     url: 'https://amewqwemmqnnjnbxhxfy.supabase.co',
     anonKey:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFtZXdxd2VtbXFubmpuYnhoeGZ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTM1MzI4OTcsImV4cCI6MjAwOTEwODg5N30.I7-M5bkOAofJton6bkWYro6vC3SEghIFyde96E9sNWc',
@@ -15,10 +17,14 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<AppStateProvider>(
@@ -31,7 +37,7 @@ class MyApp extends StatelessWidget {
                         ColorScheme.fromSeed(seedColor: Colors.deepPurple),
                     useMaterial3: true,
                   ),
-                  home: SignedOutScreen(),
+                  home: AuthController(),
                 )));
   }
 }
