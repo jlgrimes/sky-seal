@@ -61,7 +61,7 @@ class _DeckBuilderState extends State<DeckBuilder> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('Deck builder'),
+        title: const Text('Deck builder'),
       ),
       body: Center(
         child: Column(
