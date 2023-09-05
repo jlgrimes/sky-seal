@@ -63,6 +63,30 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay>
     });
   }
 
+  exitCardFocus(AppStateProvider appState, Function? onCardDismissed) {
+    setState(() {
+      //tells the widget builder to rebuild again because ui has updated
+      _deckViewState = DeckViewState
+          .exitingCardFocus; //update the variable declare this under your class so its accessible for both your widget build and initState which is located under widget build{}
+    });
+    // appState
+    //     .setDeckViewState(DeckViewState.exitingCardFocus);
+    //widget.cardAnimator.controller.reverse();
+    widget.cardAnimator.runExitAnimation(appState.cardPositionState
+        .getCardPosition(appState.currentlyViewingCard ?? widget.card.code));
+    Future.delayed(Duration(milliseconds: 200), () {
+      Navigator.pop(context);
+      // appState
+      //     .setDeckViewState(DeckViewState.noCardsFocused);
+    });
+
+    Future.delayed(Duration(milliseconds: 600), () {
+      onCardDismissed == null ? () => {} : onCardDismissed();
+      // appState
+      //     .setDeckViewState(DeckViewState.noCardsFocused);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     AppStateProvider appState = Provider.of<AppStateProvider>(context);
@@ -106,23 +130,7 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay>
                   height: size.height,
                   child: GestureDetector(
                       onTap: () {
-                        setState(() {
-                          //tells the widget builder to rebuild again because ui has updated
-                          _deckViewState = DeckViewState
-                              .exitingCardFocus; //update the variable declare this under your class so its accessible for both your widget build and initState which is located under widget build{}
-                        });
-                        // appState
-                        //     .setDeckViewState(DeckViewState.exitingCardFocus);
-                        //widget.cardAnimator.controller.reverse();
-                        widget.cardAnimator.runExitAnimation(appState
-                            .cardPositionState
-                            .getCardPosition(appState.currentlyViewingCard ??
-                                widget.card.code));
-                        Future.delayed(Duration(milliseconds: 200), () {
-                          Navigator.pop(context);
-                          // appState
-                          //     .setDeckViewState(DeckViewState.noCardsFocused);
-                        });
+                        exitCardFocus(appState, null);
                       },
                       child: Container(
                         child: Column(children: [
@@ -195,14 +203,31 @@ class _CardStackViewOverlayState extends State<CardStackViewOverlay>
                                           MainAxisAlignment.center,
                                       children: [
                                         IconButton.outlined(
-                                          onPressed: () =>
-                                              appState.updateCardCount(
-                                                  _tempIndex,
-                                                  appState
+                                          onPressed: () => {
+                                            if (appState.deck.cards[_tempIndex]
+                                                    .count ==
+                                                1)
+                                              {
+                                                exitCardFocus(appState, () {
+                                                  appState.removeCardFromDeck(
+                                                      appState
                                                           .deck
                                                           .cards[_tempIndex]
-                                                          .count -
-                                                      1),
+                                                          .code);
+                                                  appState.cardPositionState
+                                                      .recalculatePositions(
+                                                          appState.deck.cards
+                                                              .map(
+                                                                  (e) => e.code)
+                                                              .toList());
+                                                })
+                                              },
+                                            appState.updateCardCount(
+                                                _tempIndex,
+                                                appState.deck.cards[_tempIndex]
+                                                        .count -
+                                                    1)
+                                          },
                                           icon: const Icon(Icons.remove),
                                         ),
                                         const SizedBox(

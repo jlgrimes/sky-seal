@@ -36,6 +36,11 @@ class AppStateProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  removeCardFromDeck(String code) {
+    deck.removeCard(code);
+    notifyListeners();
+  }
+
   updateCardCount(int cardIdx, int newCount) {
     deck.cards[cardIdx].count = newCount;
     notifyListeners();

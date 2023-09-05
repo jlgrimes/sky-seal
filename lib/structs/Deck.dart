@@ -10,4 +10,8 @@ class Deck {
   addCard(String code) {
     cards.add(PokemonCard(code: code, count: 1));
   }
+
+  removeCard(String code) {
+    cards.removeWhere((element) => element.code == code);
+  }
 }

@@ -18,4 +18,12 @@ class CardPositioningState {
   getCardPosition(String code) {
     return positions[code]?.offset;
   }
+
+  recalculatePositions(List<String> codes) {
+    positions.clear();
+
+    for (var code in codes) {
+      positions[code] = getCardPosition(code);
+    }
+  }
 }
