@@ -86,13 +86,13 @@ class _FocusedMenuHolderState extends State<FocusedCardContainer>
             }
           });
 
+          cardAnimator.runEnterAnimation();
           await Navigator.push(
               context,
               PageRouteBuilder(
                   transitionDuration: Duration(milliseconds: 2000),
                   pageBuilder: (context, animation, secondaryAnimation) {
                     animation = Tween(begin: 1.0, end: 1.0).animate(animation);
-                    cardAnimator.runEnterAnimation();
                     return FadeTransition(
                         opacity: animation,
                         child: CardStackViewOverlay(
