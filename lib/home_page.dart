@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:sky_seal/deck_builder.dart';
 import 'package:sky_seal/structs/Card.dart';
 import 'package:sky_seal/structs/Deck.dart';
+import 'package:sky_seal/view/deck-list-view/deck-preview-card.dart';
+import 'package:sky_seal/view/deck-list-view/deck-preview-metadata.dart';
 import 'package:sky_seal/view/state/app_state_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supa;
 
@@ -41,19 +43,9 @@ class _MyHomePageState extends State<MyHomePage> {
               final thisDeck = decks[index];
               final thisDeckId = thisDeck['id'];
 
-              return ListTile(
-                title: Text(thisDeck['name']),
-                onTap: () async {
-                  final cards = await supa.Supabase.instance.client
-                      .from('cards')
-                      .select<List<Map<String, dynamic>>>()
-                      .eq('deck_id', thisDeckId);
-
-                  appState.loadDeck(cards, thisDeckId);
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => DeckBuilder()));
-                },
-              );
+              return DeckPreviewCard(
+                  deckPreviewMetadata: DeckPreviewMetadata(
+                      id: thisDeck['id'], name: thisDeck['name']));
             }),
           );
         },
