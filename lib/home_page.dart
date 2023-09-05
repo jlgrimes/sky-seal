@@ -52,7 +52,11 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => DeckBuilder()));
+              context,
+              MaterialPageRoute(
+                  builder: (context) => DeckBuilder(
+                        deckId: null,
+                      )));
         },
         label: const Text('New deck'),
         icon: const Icon(Icons.add),

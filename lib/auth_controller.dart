@@ -5,9 +5,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthController extends StatelessWidget {
   Widget build(BuildContext context) {
-    debugPrint('User is::');
-    debugPrint(Supabase.instance.client.auth.currentUser.toString());
-
     return StreamBuilder(
         stream: Supabase.instance.client.auth.onAuthStateChange,
         builder: (context, snapshot) {

@@ -17,14 +17,12 @@ class DeckPreviewCard extends StatelessWidget {
 
     return GestureDetector(
         onTap: () async {
-          final cards = await supa.Supabase.instance.client
-              .from('cards')
-              .select<List<Map<String, dynamic>>>()
-              .eq('deck_id', deckPreviewMetadata.id);
-
-          await appState.loadDeck(cards, deckPreviewMetadata.id, context);
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => DeckBuilder()));
+              context,
+              MaterialPageRoute(
+                  builder: (context) => DeckBuilder(
+                        deckId: deckPreviewMetadata.id,
+                      )));
         },
         child: Card(
             child:

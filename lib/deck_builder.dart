@@ -5,17 +5,33 @@ import 'package:provider/provider.dart' as provider;
 import 'package:share_plus/share_plus.dart';
 import 'package:sky_seal/structs/Deck.dart';
 import 'package:sky_seal/view/add-card-view/add_card_scaffold.dart';
+import 'package:sky_seal/view/deck-list-view/deck-preview-metadata.dart';
 import 'package:sky_seal/view/deck-list-view/share-deck/share-deck-button.dart';
 import 'package:sky_seal/view/deck-view/deck_view.dart';
 import 'package:sky_seal/view/state/app_state_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DeckBuilder extends StatefulWidget {
+  String? deckId;
+
+  DeckBuilder({required this.deckId});
+
   @override
   State<DeckBuilder> createState() => _DeckBuilderState();
 }
 
 class _DeckBuilderState extends State<DeckBuilder> {
+  Future<void> _deckLoad(AppStateProvider appState) async {
+    final cards = await Supabase.instance.client
+        .from('cards')
+        .select<List<Map<String, dynamic>>>()
+        .eq('deck_id', widget.deckId);
+
+    if (widget.deckId != null) {
+      await appState.loadDeck(cards, widget.deckId!, context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     AppStateProvider appState = provider.Provider.of<AppStateProvider>(context);
@@ -28,7 +44,13 @@ class _DeckBuilderState extends State<DeckBuilder> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[DeckView()],
+          children: [
+            FutureBuilder(
+                future: _deckLoad(appState),
+                builder: (context, snapshot) {
+                  return DeckView();
+                })
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(

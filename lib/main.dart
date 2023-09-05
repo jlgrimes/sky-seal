@@ -25,8 +25,8 @@ final router = GoRouter(routes: [
     path: '/:deckid',
     builder: (context, state) {
       // use state.params to get router parameter values
-      final deckId = state.pathParameters['deckid'];
-      return DeckBuilder();
+      final deckId = state.pathParameters['deckid']!;
+      return DeckBuilder(deckId: deckId);
     },
   ),
 ]);
