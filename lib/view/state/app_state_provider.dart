@@ -46,7 +46,7 @@ class AppStateProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  loadDeck(List<Map<String, dynamic>> cards, String deckId,
+  loadDeck(List<Map<String, dynamic>> cards, String? deckId,
       BuildContext context) async {
     final cardList = cards
         .map(
@@ -58,6 +58,10 @@ class AppStateProvider extends ChangeNotifier {
       await card.preloadImage(context);
     }
 
-    notifyListeners();
+    if (deckId != null) {
+      notifyListeners();
+    }
+
+    return deck;
   }
 }

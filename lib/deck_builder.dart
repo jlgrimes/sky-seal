@@ -21,14 +21,19 @@ class DeckBuilder extends StatefulWidget {
 }
 
 class _DeckBuilderState extends State<DeckBuilder> {
-  Future<void> _deckLoad(AppStateProvider appState) async {
-    final cards = await Supabase.instance.client
-        .from('cards')
-        .select<List<Map<String, dynamic>>>()
-        .eq('deck_id', widget.deckId);
+  Future<Deck> _deckLoad(AppStateProvider appState) async {
+    final List<Map<String, dynamic>> cards = widget.deckId == null
+        ? []
+        : await Supabase.instance.client
+            .from('cards')
+            .select<List<Map<String, dynamic>>>()
+            .eq('deck_id', widget.deckId);
 
-    if (widget.deckId != null) {
-      await appState.loadDeck(cards, widget.deckId!, context);
+    if (mounted) {
+      final deck = await appState.loadDeck(cards, widget.deckId, context);
+      return deck;
+    } else {
+      return Deck(cards: []);
     }
   }
 
@@ -48,6 +53,10 @@ class _DeckBuilderState extends State<DeckBuilder> {
             FutureBuilder(
                 future: _deckLoad(appState),
                 builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
                   return DeckView();
                 })
           ],
