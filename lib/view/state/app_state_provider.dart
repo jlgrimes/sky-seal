@@ -47,6 +47,7 @@ class AppStateProvider extends ChangeNotifier {
 
   updateCardCount(int cardIdx, int newCount) {
     deck.cards[cardIdx].count = newCount;
+    hasUnsavedChanges = true;
     notifyListeners();
   }
 
@@ -63,6 +64,7 @@ class AppStateProvider extends ChangeNotifier {
     }
 
     if (deckId != null) {
+      hasUnsavedChanges = false;
       notifyListeners();
     }
 
@@ -111,6 +113,7 @@ class AppStateProvider extends ChangeNotifier {
           .from('cards')
           .upsert(cardsToBeUpserted)
           .select<List<Map<String, dynamic>>>();
+
       await loadDeck([...insertedCards, ...upsertedCards], deckId!, context);
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Deck saved')));

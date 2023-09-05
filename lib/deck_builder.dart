@@ -87,7 +87,7 @@ class _DeckBuilderState extends State<DeckBuilder> {
             visible: _pageHasLoaded,
             child: Container(
                 margin: const EdgeInsets.only(bottom: 20.0, top: 10.0),
-                child: FloatingActionButton.large(
+                child: FloatingActionButton.extended(
                   heroTag: 'add-card',
                   onPressed: () {
                     Navigator.push(
@@ -97,15 +97,23 @@ class _DeckBuilderState extends State<DeckBuilder> {
                                   addCardCallback: appState.addCardToDeck,
                                 )));
                   },
-                  child: const Icon(Icons.add),
+                  icon: const Icon(Icons.add),
+                  label: Text('Add Card'),
+                  isExtended: false,
                 )),
           ),
           Container(
             margin: const EdgeInsets.only(bottom: 12.0, top: 10.0),
             child: FloatingActionButton.extended(
+              foregroundColor: appState.hasUnsavedChanges
+                  ? Theme.of(context).colorScheme.onTertiaryContainer
+                  : Theme.of(context).colorScheme.onSecondaryContainer,
+              backgroundColor: appState.hasUnsavedChanges
+                  ? Theme.of(context).colorScheme.tertiaryContainer
+                  : Theme.of(context).colorScheme.secondaryContainer,
               heroTag: 'save-deck',
-              isExtended: true,
-              elevation: 0,
+              isExtended: appState.hasUnsavedChanges,
+              elevation: appState.hasUnsavedChanges ? 6 : 1,
               onPressed: () async {
                 appState.saveChanges(context);
               },
