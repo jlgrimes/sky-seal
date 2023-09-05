@@ -3,6 +3,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:indexed/indexed.dart';
 import 'package:provider/provider.dart';
 import 'package:sky_seal/view/card-view/focused_card_container.dart';
+import 'package:sky_seal/view/primatives/constants.dart';
 import 'package:sky_seal/view/state/app_state_provider.dart';
 
 class DeckView extends StatelessWidget {
@@ -10,14 +11,16 @@ class DeckView extends StatelessWidget {
   Widget build(BuildContext context) {
     AppStateProvider appState = Provider.of<AppStateProvider>(context);
 
-    return Indexer(
-      children: [
-        StaggeredGrid.count(crossAxisCount: 3, children: [
+    return Expanded(
+        child: GridView.count(
+            crossAxisCount: 3,
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            childAspectRatio: cardAspectRatio,
+            children: [
           ...appState.deck.cards.map((card) => FocusedCardContainer(
                 card: card,
               ))
-        ])
-      ],
-    );
+        ]));
   }
 }
