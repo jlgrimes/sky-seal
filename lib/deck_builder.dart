@@ -5,6 +5,7 @@ import 'package:provider/provider.dart' as provider;
 import 'package:share_plus/share_plus.dart';
 import 'package:sky_seal/structs/Deck.dart';
 import 'package:sky_seal/view/add-card-view/add_card_scaffold.dart';
+import 'package:sky_seal/view/deck-list-view/share-deck/share-deck-button.dart';
 import 'package:sky_seal/view/deck-view/deck_view.dart';
 import 'package:sky_seal/view/state/app_state_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -102,12 +103,7 @@ class _DeckBuilderState extends State<DeckBuilder> {
                   }
                 },
                 icon: const Icon(Icons.save_outlined)),
-            IconButton(
-                onPressed: () {
-                  Share.share(
-                      'https://skyseal.app/${appState.deck.id.toString()}');
-                },
-                icon: Icon(Platform.isIOS ? Icons.ios_share : Icons.share)),
+            ShareDeckButton(),
           ],
         )),
       ),
