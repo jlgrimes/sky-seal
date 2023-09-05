@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart' as provider;
 import 'package:share_plus/share_plus.dart';
@@ -21,20 +22,30 @@ class DeckBuilder extends StatefulWidget {
 }
 
 class _DeckBuilderState extends State<DeckBuilder> {
-  Future<Deck> _deckLoad(AppStateProvider appState) async {
-    final List<Map<String, dynamic>> cards = widget.deckId == null
-        ? []
-        : await Supabase.instance.client
-            .from('cards')
-            .select<List<Map<String, dynamic>>>()
-            .eq('deck_id', widget.deckId);
+  late AsyncMemoizer _memoizer;
 
-    if (mounted) {
-      final deck = await appState.loadDeck(cards, widget.deckId, context);
-      return deck;
-    } else {
-      return Deck(cards: []);
-    }
+  @override
+  void initState() {
+    super.initState();
+    _memoizer = AsyncMemoizer();
+  }
+
+  Future _deckLoad(AppStateProvider appState) async {
+    return _memoizer.runOnce(() async {
+      final List<Map<String, dynamic>> cards = widget.deckId == null
+          ? []
+          : await Supabase.instance.client
+              .from('cards')
+              .select<List<Map<String, dynamic>>>()
+              .eq('deck_id', widget.deckId);
+
+      if (mounted) {
+        final deck = await appState.loadDeck(cards, widget.deckId, context);
+        return deck;
+      } else {
+        return Deck(cards: []);
+      }
+    });
   }
 
   @override
