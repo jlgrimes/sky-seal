@@ -27,37 +27,28 @@ class DeckPreviewCard extends StatelessWidget {
               context, MaterialPageRoute(builder: (context) => DeckBuilder()));
         },
         child: Card(
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              side: BorderSide(
-                color: Theme.of(context).colorScheme.outline,
-              ),
-              borderRadius: const BorderRadius.all(Radius.circular(12)),
-            ),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              AspectRatio(
-                  aspectRatio: 2,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(12.0),
-                            topRight: Radius.circular(12.0)),
-                        image: DecorationImage(
-                          fit: BoxFit.fitWidth,
-                          alignment: FractionalOffset.fromOffsetAndSize(
-                              Offset(0, 90), Size(500, 500)),
-                          image: NetworkImage(
-                              deckPreviewMetadata.featuredCardImgUrl),
-                        )),
-                  )),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  deckPreviewMetadata.name,
-                  style: Theme.of(context).textTheme.headlineLarge,
-                ),
-              )
-            ])));
+          AspectRatio(
+              aspectRatio: 2,
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+                    image: DecorationImage(
+                      fit: BoxFit.fitWidth,
+                      alignment: FractionalOffset.fromOffsetAndSize(
+                          Offset(0, 90), Size(500, 500)),
+                      image:
+                          NetworkImage(deckPreviewMetadata.featuredCardImgUrl),
+                    )),
+              )),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              deckPreviewMetadata.name,
+              style: Theme.of(context).textTheme.headlineLarge,
+            ),
+          )
+        ])));
   }
 }
