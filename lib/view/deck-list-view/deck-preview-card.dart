@@ -22,7 +22,7 @@ class DeckPreviewCard extends StatelessWidget {
               .select<List<Map<String, dynamic>>>()
               .eq('deck_id', deckPreviewMetadata.id);
 
-          appState.loadDeck(cards, deckPreviewMetadata.id);
+          await appState.loadDeck(cards, deckPreviewMetadata.id, context);
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => DeckBuilder()));
         },

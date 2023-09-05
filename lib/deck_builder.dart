@@ -94,8 +94,8 @@ class _DeckBuilderState extends State<DeckBuilder> {
                         .from('cards')
                         .upsert(cardsToBeUpserted)
                         .select<List<Map<String, dynamic>>>();
-                    appState.loadDeck(
-                        [...insertedCards, ...upsertedCards], deckId!);
+                    await appState.loadDeck(
+                        [...insertedCards, ...upsertedCards], deckId!, context);
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Deck saved')));
                   } catch (e) {

@@ -46,12 +46,17 @@ class AppStateProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  loadDeck(List<Map<String, dynamic>> cards, String deckId) {
+  loadDeck(List<Map<String, dynamic>> cards, String deckId,
+      BuildContext context) async {
     final cardList = cards
         .map(
             (e) => PokemonCard(id: e['id'], code: e['code'], count: e['count']))
         .toList();
     deck = Deck(cards: cardList, id: deckId);
+
+    for (var card in deck.cards) {
+      await card.preloadImage(context);
+    }
 
     notifyListeners();
   }
