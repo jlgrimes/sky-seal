@@ -97,9 +97,9 @@ class _AddCardScaffoldState extends State<AddCardScaffold> {
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 childAspectRatio: cardAspectRatio,
-                mainAxisSpacing: 8.0,
-                crossAxisSpacing: 8.0,
-                padding: const EdgeInsets.all(8.0),
+                mainAxisSpacing: 6.0,
+                crossAxisSpacing: 6.0,
+                padding: const EdgeInsets.all(6.0),
                 children: _isLoading
                     ? [
                         Image.network(

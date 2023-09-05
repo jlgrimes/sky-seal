@@ -17,6 +17,9 @@ class DeckView extends StatelessWidget {
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
             childAspectRatio: cardAspectRatio,
+            mainAxisSpacing: 6.0,
+            crossAxisSpacing: 6.0,
+            padding: const EdgeInsets.all(6.0),
             children: [
           ...appState.deck.cards.map((card) => FocusedCardContainer(
                 card: card,
