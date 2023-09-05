@@ -102,8 +102,10 @@ class _DeckBuilderState extends State<DeckBuilder> {
                 icon: const Icon(Icons.save_outlined)),
             IconButton(
                 onPressed: () {
-                  Share.share('https://skyseal.app/${appState.deck.id.toString()}');
-                }, icon: const Icon(Icons.file_upload_outlined)),
+                  Share.share(
+                      'https://skyseal.app/${appState.deck.id.toString()}');
+                },
+                icon: const Icon(Icons.file_upload_outlined)),
           ],
         )),
       ),

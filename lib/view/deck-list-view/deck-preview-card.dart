@@ -37,7 +37,7 @@ class DeckPreviewCard extends StatelessWidget {
                     image: DecorationImage(
                       fit: BoxFit.fitWidth,
                       alignment: FractionalOffset.fromOffsetAndSize(
-                          Offset(0, 90), Size(500, 500)),
+                          const Offset(0, 90), const Size(500, 500)),
                       image:
                           NetworkImage(deckPreviewMetadata.featuredCardImgUrl),
                     )),

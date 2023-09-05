@@ -41,7 +41,6 @@ class _MyHomePageState extends State<MyHomePage> {
             itemCount: decks.length,
             itemBuilder: ((context, index) {
               final thisDeck = decks[index];
-              final thisDeckId = thisDeck['id'];
 
               return DeckPreviewCard(
                   deckPreviewMetadata: DeckPreviewMetadata(
