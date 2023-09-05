@@ -7,8 +7,8 @@ class Deck {
 
   Deck({required this.cards, this.id});
 
-  addCard(String code) {
-    cards.add(PokemonCard(code: code, count: 1));
+  addCard(card) {
+    cards.add(card);
   }
 
   removeCard(String code) {

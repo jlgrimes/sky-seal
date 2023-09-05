@@ -3,13 +3,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:sky_seal/structs/Card.dart';
 import 'dart:async';
 
 import 'package:sky_seal/view/add-card-view/CardPreview.dart';
 import 'package:sky_seal/view/primatives/constants.dart';
 
 class AddCardScaffold extends StatefulWidget {
-  final Function(String code) addCardCallback;
+  final Function(PokemonCard card) addCardCallback;
 
   AddCardScaffold({required this.addCardCallback});
 
@@ -20,7 +21,7 @@ class AddCardScaffold extends StatefulWidget {
 class _AddCardScaffoldState extends State<AddCardScaffold> {
   final TextEditingController _searchController = TextEditingController();
   bool _isLoading = false;
-  List<CardPreview> _results = [];
+  List<PokemonCard> _results = [];
   Timer? _debounce;
 
   @override
@@ -58,9 +59,13 @@ class _AddCardScaffoldState extends State<AddCardScaffold> {
     final Map<String, dynamic> data = json.decode(response.body);
     final List<Map<String, dynamic>> cardList =
         List<Map<String, dynamic>>.from(data['data']);
-    final List<CardPreview> cards = cardList
-        .map((card) =>
-            CardPreview(code: card['id'], imgUrl: card['images']['large']))
+    final List<PokemonCard> cards = cardList
+        .map((card) => PokemonCard(
+            code: card['id'],
+            supertype:
+                card.containsKey('supertype') ? card['supertype'] : '_invalid',
+            rarity: card.containsKey('rarity') ? card['rarity'] : '_invalid',
+            count: 1))
         .toList();
 
     // await Future.delayed(const Duration(milliseconds: 1000));
@@ -124,7 +129,7 @@ class _AddCardScaffoldState extends State<AddCardScaffold> {
                     : _results
                         .map((e) => GestureDetector(
                               onTap: () {
-                                widget.addCardCallback(e.code);
+                                widget.addCardCallback(e);
                                 Navigator.pop(context);
                               },
                               child: e.image,
