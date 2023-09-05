@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart' as provider;
 import 'package:share_plus/share_plus.dart';
@@ -105,7 +107,7 @@ class _DeckBuilderState extends State<DeckBuilder> {
                   Share.share(
                       'https://skyseal.app/${appState.deck.id.toString()}');
                 },
-                icon: const Icon(Icons.file_upload_outlined)),
+                icon: Icon(Platform.isIOS ? Icons.ios_share : Icons.share)),
           ],
         )),
       ),

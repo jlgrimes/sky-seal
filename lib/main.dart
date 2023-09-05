@@ -19,19 +19,17 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
- /// This handles '/' and '/details'.
- final router = GoRouter(
-  routes: [
-    GoRoute(
-      path: '/:deckid',
-      builder: (context, state) {
-        // use state.params to get router parameter values
-        final deckId = state.pathParameters['deckid'];
-        return DeckBuilder();
-      },
-    ),
-  ]
-);
+/// This handles '/' and '/details'.
+final router = GoRouter(routes: [
+  GoRoute(
+    path: '/:deckid',
+    builder: (context, state) {
+      // use state.params to get router parameter values
+      final deckId = state.pathParameters['deckid'];
+      return DeckBuilder();
+    },
+  ),
+]);
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -50,7 +48,7 @@ class _MyAppState extends State<MyApp> {
                   title: 'Flutter Demo',
                   theme: ThemeData(
                     colorScheme:
-                        ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+                        ColorScheme.fromSeed(seedColor: Colors.blueAccent),
                     useMaterial3: true,
                   ),
                   home: AuthController(),
