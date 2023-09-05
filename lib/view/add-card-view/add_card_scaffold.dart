@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:skeletonizer/skeletonizer.dart';
 import 'dart:async';
 
 import 'package:sky_seal/view/add-card-view/CardPreview.dart';
+import 'package:sky_seal/view/primatives/constants.dart';
 
 class AddCardScaffold extends StatefulWidget {
   final Function(String code) addCardCallback;
@@ -31,17 +33,20 @@ class _AddCardScaffoldState extends State<AddCardScaffold> {
     if (_searchController.text.length < 3) return;
 
     if (_debounce?.isActive ?? false) _debounce?.cancel();
+
     _debounce = Timer(const Duration(milliseconds: 500), () {
+      if (!mounted) return;
+
+      setState(() {
+        _isLoading = true;
+      });
+
       _performSearch();
     });
   }
 
   Future<void> _performSearch() async {
     if (!mounted) return;
-
-    setState(() {
-      _isLoading = true;
-    });
 
     //Simulates waiting for an API call
     final http.Response response = await http.get(Uri.parse(
@@ -59,6 +64,9 @@ class _AddCardScaffoldState extends State<AddCardScaffold> {
         .toList();
 
     // await Future.delayed(const Duration(milliseconds: 1000));
+    for (final card in cards) {
+      await card.preloadImage(context);
+    }
 
     setState(() {
       _results = cards;
@@ -69,33 +77,60 @@ class _AddCardScaffoldState extends State<AddCardScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(child: Container(
-          child: Column(children: [
-        TextField(
-          controller: _searchController,
-          autofocus: true,
-          decoration: InputDecoration(
-              suffixIcon: IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () => Navigator.pop(context)),
-              prefixIcon: const Icon(Icons.search)),
-        ),
-        Expanded(
-          child: GridView.count(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              crossAxisCount: 2,
-              children: _results
-                  .map((e) => GestureDetector(
-                        onTap: () {
-                          widget.addCardCallback(e.code);
-                          Navigator.pop(context);
-                        },
-                        child: Image.network(e.imgUrl),
-                      ))
-                  .toList()),
-        )
-      ])))
-    );
+        body: SafeArea(
+            child: Container(
+                child: Column(children: [
+      TextField(
+        controller: _searchController,
+        autofocus: true,
+        decoration: InputDecoration(
+            suffixIcon: IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () => Navigator.pop(context)),
+            prefixIcon: const Icon(Icons.search)),
+      ),
+      Expanded(
+        child: Skeletonizer(
+            enabled: _isLoading,
+            child: GridView.count(
+                crossAxisCount: 3,
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                childAspectRatio: cardAspectRatio,
+                mainAxisSpacing: 8.0,
+                crossAxisSpacing: 8.0,
+                padding: const EdgeInsets.all(8.0),
+                children: _isLoading
+                    ? [
+                        Image.network(
+                            'https://images.pokemontcg.io/pop6/3_hires.png'),
+                        Image.network(
+                            'https://images.pokemontcg.io/pop6/3_hires.png'),
+                        Image.network(
+                            'https://images.pokemontcg.io/pop6/3_hires.png'),
+                        Image.network(
+                            'https://images.pokemontcg.io/pop6/3_hires.png'),
+                        Image.network(
+                            'https://images.pokemontcg.io/pop6/3_hires.png'),
+                        Image.network(
+                            'https://images.pokemontcg.io/pop6/3_hires.png'),
+                        Image.network(
+                            'https://images.pokemontcg.io/pop6/3_hires.png'),
+                        Image.network(
+                            'https://images.pokemontcg.io/pop6/3_hires.png'),
+                        Image.network(
+                            'https://images.pokemontcg.io/pop6/3_hires.png'),
+                      ]
+                    : _results
+                        .map((e) => GestureDetector(
+                              onTap: () {
+                                widget.addCardCallback(e.code);
+                                Navigator.pop(context);
+                              },
+                              child: e.image,
+                            ))
+                        .toList())),
+      )
+    ]))));
   }
 }
