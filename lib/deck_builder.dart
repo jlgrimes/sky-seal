@@ -23,6 +23,7 @@ class DeckBuilder extends StatefulWidget {
 
 class _DeckBuilderState extends State<DeckBuilder> {
   late AsyncMemoizer _memoizer;
+  bool _pageHasLoaded = false;
 
   @override
   void initState() {
@@ -41,6 +42,11 @@ class _DeckBuilderState extends State<DeckBuilder> {
 
       if (mounted) {
         final deck = await appState.loadDeck(cards, widget.deckId, context);
+
+        setState(() {
+          _pageHasLoaded = true;
+        });
+
         return deck;
       } else {
         return Deck(cards: []);
@@ -73,17 +79,41 @@ class _DeckBuilderState extends State<DeckBuilder> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => AddCardScaffold(
-                        addCardCallback: appState.addCardToDeck,
-                      )));
-        },
-        label: const Text('Add card'),
-        icon: const Icon(Icons.add),
+      floatingActionButton: Wrap(
+        direction: Axis.vertical,
+        crossAxisAlignment: WrapCrossAlignment.end,
+        children: [
+          Visibility(
+            visible: _pageHasLoaded,
+            child: Container(
+                margin: const EdgeInsets.only(bottom: 20.0, top: 10.0),
+                child: FloatingActionButton.large(
+                  heroTag: 'add-card',
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddCardScaffold(
+                                  addCardCallback: appState.addCardToDeck,
+                                )));
+                  },
+                  child: const Icon(Icons.add),
+                )),
+          ),
+          Container(
+            margin: const EdgeInsets.only(bottom: 12.0, top: 10.0),
+            child: FloatingActionButton.extended(
+              heroTag: 'save-deck',
+              isExtended: true,
+              elevation: 0,
+              onPressed: () async {
+                appState.saveChanges(context);
+              },
+              label: const Text('Save changes'),
+              icon: const Icon(Icons.save_outlined),
+            ),
+          )
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
       bottomNavigationBar: AnimatedContainer(
@@ -91,60 +121,6 @@ class _DeckBuilderState extends State<DeckBuilder> {
         child: BottomAppBar(
             child: Row(
           children: [
-            IconButton(
-                onPressed: () async {
-                  try {
-                    String? userId =
-                        Supabase.instance.client.auth.currentUser?.id;
-                    if (userId == null)
-                      throw 'User is not logged in and cannot save decks';
-
-                    String? deckId = appState.deck.id;
-                    if (deckId == null) {
-                      final List<Map<String, dynamic>> data =
-                          await Supabase.instance.client.from('decks').insert(
-                              {'name': 'My deck', 'owner': userId}).select();
-                      deckId = data[0]['id'];
-                    }
-
-                    List<Map<String, dynamic>> cardsToBeInserted = [];
-                    List<Map<String, dynamic>> cardsToBeUpserted = [];
-
-                    appState.deck.cards.forEach((element) {
-                      if (element.id == null) {
-                        cardsToBeInserted.add({
-                          'code': element.code,
-                          'count': element.count,
-                          'deck_id': deckId
-                        });
-                      } else {
-                        cardsToBeUpserted.add({
-                          'id': element.id,
-                          'code': element.code,
-                          'count': element.count,
-                          'deck_id': deckId
-                        });
-                      }
-                    });
-
-                    final insertedCards = await Supabase.instance.client
-                        .from('cards')
-                        .insert(cardsToBeInserted)
-                        .select<List<Map<String, dynamic>>>();
-
-                    final upsertedCards = await Supabase.instance.client
-                        .from('cards')
-                        .upsert(cardsToBeUpserted)
-                        .select<List<Map<String, dynamic>>>();
-                    await appState.loadDeck(
-                        [...insertedCards, ...upsertedCards], deckId!, context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Deck saved')));
-                  } catch (e) {
-                    debugPrint(e.toString());
-                  }
-                },
-                icon: const Icon(Icons.save_outlined)),
             ShareDeckButton(),
           ],
         )),
