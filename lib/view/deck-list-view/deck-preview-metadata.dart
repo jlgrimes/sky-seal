@@ -1,9 +1,13 @@
+import 'package:sky_seal/util/sets.dart';
+
 class DeckPreviewMetadata {
   String id;
   String name;
+  String featuredCard;
   late String featuredCardImgUrl;
 
-  DeckPreviewMetadata({required this.id, required this.name}) {
-    featuredCardImgUrl = 'https://images.pokemontcg.io/sv2/61_hires.png';
+  DeckPreviewMetadata(
+      {required this.id, required this.name, required this.featuredCard}) {
+    featuredCardImgUrl = convertSetCodeToImageUrl(featuredCard);
   }
 }

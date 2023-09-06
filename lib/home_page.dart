@@ -44,7 +44,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
               return DeckPreviewCard(
                   deckPreviewMetadata: DeckPreviewMetadata(
-                      id: thisDeck['id'], name: thisDeck['name']));
+                      id: thisDeck['id'],
+                      name: thisDeck['name'],
+                      featuredCard: thisDeck['featured_card']));
             }),
           );
         },
