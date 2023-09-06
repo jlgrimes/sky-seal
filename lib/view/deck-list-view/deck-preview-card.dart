@@ -22,6 +22,7 @@ class DeckPreviewCard extends StatelessWidget {
               MaterialPageRoute(
                   builder: (context) => DeckBuilder(
                         deckId: deckPreviewMetadata.id,
+                        deckName: deckPreviewMetadata.name,
                       )));
         },
         child: Card(

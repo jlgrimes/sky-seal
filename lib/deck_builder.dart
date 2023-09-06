@@ -7,15 +7,17 @@ import 'package:share_plus/share_plus.dart';
 import 'package:sky_seal/structs/Deck.dart';
 import 'package:sky_seal/view/add-card-view/add_card_scaffold.dart';
 import 'package:sky_seal/view/deck-list-view/deck-preview-metadata.dart';
-import 'package:sky_seal/view/deck-list-view/share-deck/share-deck-button.dart';
+import 'package:sky_seal/view/deck-list-view/edit-deck-button.dart';
+import 'package:sky_seal/view/deck-list-view/share-deck-button.dart';
 import 'package:sky_seal/view/deck-view/deck_view.dart';
 import 'package:sky_seal/view/state/app_state_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DeckBuilder extends StatefulWidget {
   String? deckId;
+  String? deckName;
 
-  DeckBuilder({required this.deckId});
+  DeckBuilder({required this.deckId, required this.deckName});
 
   @override
   State<DeckBuilder> createState() => _DeckBuilderState();
@@ -41,7 +43,8 @@ class _DeckBuilderState extends State<DeckBuilder> {
               .eq('deck_id', widget.deckId);
 
       if (mounted) {
-        final deck = await appState.loadDeck(cards, widget.deckId, context);
+        final deck = await appState.loadDeck(
+            cards, widget.deckId, widget.deckName, context);
 
         setState(() {
           _pageHasLoaded = true;
@@ -61,7 +64,7 @@ class _DeckBuilderState extends State<DeckBuilder> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Deck builder'),
+        title: Text(appState.deck.name ?? 'Deck'),
       ),
       body: Center(
         child: Column(
@@ -129,6 +132,7 @@ class _DeckBuilderState extends State<DeckBuilder> {
         child: BottomAppBar(
             child: Row(
           children: [
+            EditDeckButton(),
             ShareDeckButton(),
           ],
         )),

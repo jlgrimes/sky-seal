@@ -51,7 +51,11 @@ class AppStateProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  loadDeck(List<Map<String, dynamic>> cards, String? deckId,
+  updateDeckName(String newName) {
+    deck.name = newName;
+  }
+
+  loadDeck(List<Map<String, dynamic>> cards, String? deckId, String? deckName,
       BuildContext context) async {
     final cardList = cards
         .map((e) => PokemonCard(
@@ -61,7 +65,7 @@ class AppStateProvider extends ChangeNotifier {
             supertype: e['supertype'],
             rarity: e['rarity']))
         .toList();
-    deck = Deck(cards: cardList, id: deckId);
+    deck = Deck(cards: cardList, id: deckId, name: deckName);
 
     for (var card in deck.cards) {
       await card.preloadImage(context);
@@ -140,13 +144,14 @@ class AppStateProvider extends ChangeNotifier {
       if (userId == null) throw 'User is not logged in and cannot save decks';
 
       String? deckId = deck.id;
+      String? deckName = deck.name;
       final featuredCard = getFeaturedCard();
 
       if (deckId == null) {
         final List<Map<String, dynamic>> data = await Supabase.instance.client
             .from('decks')
             .insert({
-          'name': 'My deck',
+          'name': deckName,
           'owner': userId,
           'featured_card': featuredCard
         }).select();
@@ -191,7 +196,8 @@ class AppStateProvider extends ChangeNotifier {
           .upsert(cardsToBeUpserted)
           .select<List<Map<String, dynamic>>>();
 
-      await loadDeck([...insertedCards, ...upsertedCards], deckId!, context);
+      await loadDeck(
+          [...insertedCards, ...upsertedCards], deckId!, deckName, context);
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Deck saved')));
     } catch (e) {

@@ -58,6 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
               MaterialPageRoute(
                   builder: (context) => DeckBuilder(
                         deckId: null,
+                        deckName: null,
                       )));
         },
         label: const Text('New deck'),
