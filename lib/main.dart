@@ -19,8 +19,13 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-/// This handles '/' and '/details'.
 final router = GoRouter(routes: [
+  GoRoute(
+    path: '/',
+    builder: (context, state) {
+      return AuthController();
+    },
+  ),
   GoRoute(
     path: '/:deckid',
     builder: (context, state) {
@@ -47,14 +52,14 @@ class _MyAppState extends State<MyApp> {
     return ChangeNotifierProvider<AppStateProvider>(
         create: (context) => AppStateProvider(),
         child: Consumer<AppStateProvider>(
-            builder: (context, themeProvider, child) => MaterialApp(
+            builder: (context, themeProvider, child) => MaterialApp.router(
                   title: 'Flutter Demo',
                   theme: ThemeData(
                     colorScheme:
                         ColorScheme.fromSeed(seedColor: Colors.blueAccent),
                     useMaterial3: true,
                   ),
-                  home: AuthController(),
+                  routerConfig: router,
                 )));
   }
 }
