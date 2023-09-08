@@ -99,6 +99,7 @@ class AppStateProvider extends ChangeNotifier {
         cards: [],
         permissions: DeckPermissions(
             ownerOfDeck: Supabase.instance.client.auth.currentUser!.id));
+    notifyListeners();
   }
 
   getFeaturedCard() {
