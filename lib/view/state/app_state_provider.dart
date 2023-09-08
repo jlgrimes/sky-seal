@@ -61,6 +61,9 @@ class AppStateProvider extends ChangeNotifier {
       DeckPermissions? deckPermissions, BuildContext context) async {
     // Should be a more generic check but whatcha gonna do
 
+    deck.id ??= deckId;
+    if (deck.name == null && deckName != null) deck.name = deckName;
+
     if (deckPermissions != null) {
       deck.permissions = deckPermissions;
     } else if (deck.permissions == null) {
@@ -79,7 +82,7 @@ class AppStateProvider extends ChangeNotifier {
             supertype: e['supertype'],
             rarity: e['rarity']))
         .toList();
-    deck = Deck(cards: cardList, id: deckId, name: deckName);
+    deck.cards = cardList;
 
     for (var card in deck.cards) {
       await card.preloadImage(context);
@@ -92,7 +95,10 @@ class AppStateProvider extends ChangeNotifier {
   }
 
   loadNewDeck() {
-    deck = Deck(cards: []);
+    deck = Deck(
+        cards: [],
+        permissions: DeckPermissions(
+            ownerOfDeck: Supabase.instance.client.auth.currentUser!.id));
   }
 
   getFeaturedCard() {

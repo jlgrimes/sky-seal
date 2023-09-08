@@ -31,6 +31,7 @@ class DeckBuilder extends StatefulWidget {
 class _DeckBuilderState extends State<DeckBuilder> {
   late AsyncMemoizer _memoizer;
   bool _pageHasLoaded = false;
+  bool _userCanEdit = false;
 
   @override
   void initState() {
@@ -61,6 +62,12 @@ class _DeckBuilderState extends State<DeckBuilder> {
         setState(() {
           _pageHasLoaded = true;
         });
+
+        if (deck.permissions != null) {
+          setState(() {
+            _userCanEdit = deck.permissions!.canEdit();
+          });
+        }
       }
 
       return deck;
@@ -97,7 +104,7 @@ class _DeckBuilderState extends State<DeckBuilder> {
         crossAxisAlignment: WrapCrossAlignment.end,
         children: [
           Visibility(
-            visible: _pageHasLoaded,
+            visible: _pageHasLoaded && _userCanEdit,
             child: Container(
                 margin: const EdgeInsets.only(bottom: 20.0, top: 10.0),
                 child: FloatingActionButton.extended(
@@ -115,25 +122,27 @@ class _DeckBuilderState extends State<DeckBuilder> {
                   isExtended: false,
                 )),
           ),
-          Container(
-            margin: const EdgeInsets.only(bottom: 12.0, top: 10.0),
-            child: FloatingActionButton.extended(
-              foregroundColor: appState.hasUnsavedChanges
-                  ? Theme.of(context).colorScheme.onTertiaryContainer
-                  : Theme.of(context).colorScheme.onSecondaryContainer,
-              backgroundColor: appState.hasUnsavedChanges
-                  ? Theme.of(context).colorScheme.tertiaryContainer
-                  : Theme.of(context).colorScheme.secondaryContainer,
-              heroTag: 'save-deck',
-              isExtended: appState.hasUnsavedChanges,
-              elevation: appState.hasUnsavedChanges ? 6 : 1,
-              onPressed: () async {
-                appState.saveChanges(context);
-              },
-              label: const Text('Save changes'),
-              icon: const Icon(Icons.save_outlined),
-            ),
-          )
+          Visibility(
+              visible: _userCanEdit,
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 12.0, top: 10.0),
+                child: FloatingActionButton.extended(
+                  foregroundColor: appState.hasUnsavedChanges
+                      ? Theme.of(context).colorScheme.onTertiaryContainer
+                      : Theme.of(context).colorScheme.onSecondaryContainer,
+                  backgroundColor: appState.hasUnsavedChanges
+                      ? Theme.of(context).colorScheme.tertiaryContainer
+                      : Theme.of(context).colorScheme.secondaryContainer,
+                  heroTag: 'save-deck',
+                  isExtended: appState.hasUnsavedChanges,
+                  elevation: appState.hasUnsavedChanges ? 6 : 1,
+                  onPressed: () async {
+                    appState.saveChanges(context);
+                  },
+                  label: const Text('Save changes'),
+                  icon: const Icon(Icons.save_outlined),
+                ),
+              ))
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
@@ -142,7 +151,7 @@ class _DeckBuilderState extends State<DeckBuilder> {
         child: BottomAppBar(
             child: Row(
           children: [
-            EditDeckButton(),
+            Visibility(visible: _userCanEdit, child: EditDeckButton()),
             ShareDeckButton(),
           ],
         )),
