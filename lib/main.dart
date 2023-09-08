@@ -34,6 +34,7 @@ final router = GoRouter(routes: [
       return DeckBuilder(
         deckId: deckId,
         deckName: null,
+        permissions: null,
       );
     },
   ),

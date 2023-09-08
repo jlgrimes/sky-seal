@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sky_seal/structs/Card.dart';
 import 'package:sky_seal/structs/Deck.dart';
+import 'package:sky_seal/view/deck-list-view/DeckPermissions.dart';
 import 'package:sky_seal/view/state/card_positioning_state.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -17,6 +18,7 @@ class AppStateProvider extends ChangeNotifier {
   CardPositioningState cardPositionState = CardPositioningState();
   Deck deck = Deck(cards: []);
   bool hasUnsavedChanges = false;
+  DeckPermissions? permissions;
 
   sneakilySetCurrentlyViewingCard(String? code) {
     currentlyViewingCard = code;
@@ -55,8 +57,20 @@ class AppStateProvider extends ChangeNotifier {
     deck.name = newName;
   }
 
-  loadDeck(List<Map<String, dynamic>> cards, String? deckId, String? deckName,
-      BuildContext context) async {
+  loadDeck(List<Map<String, dynamic>> cards, String deckId, String? deckName,
+      DeckPermissions? deckPermissions, BuildContext context) async {
+    // Should be a more generic check but whatcha gonna do
+
+    if (deckPermissions != null) {
+      deck.permissions = deckPermissions;
+    } else if (deck.permissions == null) {
+      final deckMetadata = await Supabase.instance.client
+          .from('decks')
+          .select<List<Map<String, dynamic>>>('owner')
+          .eq('deck_id', deckId);
+      deck.permissions = DeckPermissions(ownerOfDeck: deckMetadata[0]['owner']);
+    }
+
     final cardList = cards
         .map((e) => PokemonCard(
             id: e['id'],
@@ -71,12 +85,14 @@ class AppStateProvider extends ChangeNotifier {
       await card.preloadImage(context);
     }
 
-    if (deckId != null) {
-      hasUnsavedChanges = false;
-      notifyListeners();
-    }
+    hasUnsavedChanges = false;
+    notifyListeners();
 
     return deck;
+  }
+
+  loadNewDeck() {
+    deck = Deck(cards: []);
   }
 
   getFeaturedCard() {
@@ -196,8 +212,8 @@ class AppStateProvider extends ChangeNotifier {
           .upsert(cardsToBeUpserted)
           .select<List<Map<String, dynamic>>>();
 
-      await loadDeck(
-          [...insertedCards, ...upsertedCards], deckId!, deckName, context);
+      await loadDeck([...insertedCards, ...upsertedCards], deckId!, deckName,
+          null, context);
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Deck saved')));
     } catch (e) {

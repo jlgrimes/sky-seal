@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sky_seal/deck_builder.dart';
+import 'package:sky_seal/view/deck-list-view/DeckPermissions.dart';
 import 'package:sky_seal/view/deck-list-view/deck-preview-metadata.dart';
 import 'package:sky_seal/view/state/app_state_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supa;
 
 class DeckPreviewCard extends StatelessWidget {
   DeckPreviewMetadata deckPreviewMetadata;
+  DeckPermissions permissions;
 
-  DeckPreviewCard({required this.deckPreviewMetadata});
+  DeckPreviewCard(
+      {required this.deckPreviewMetadata, required this.permissions});
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +24,9 @@ class DeckPreviewCard extends StatelessWidget {
               context,
               MaterialPageRoute(
                   builder: (context) => DeckBuilder(
-                        deckId: deckPreviewMetadata.id,
-                        deckName: deckPreviewMetadata.name,
-                      )));
+                      deckId: deckPreviewMetadata.id,
+                      deckName: deckPreviewMetadata.name,
+                      permissions: permissions)));
         },
         child: Card(
             child:

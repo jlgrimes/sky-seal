@@ -6,6 +6,7 @@ import 'package:provider/provider.dart' as provider;
 import 'package:share_plus/share_plus.dart';
 import 'package:sky_seal/structs/Deck.dart';
 import 'package:sky_seal/view/add-card-view/add_card_scaffold.dart';
+import 'package:sky_seal/view/deck-list-view/DeckPermissions.dart';
 import 'package:sky_seal/view/deck-list-view/deck-preview-metadata.dart';
 import 'package:sky_seal/view/deck-list-view/edit-deck-button.dart';
 import 'package:sky_seal/view/deck-list-view/share-deck-button.dart';
@@ -16,8 +17,12 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class DeckBuilder extends StatefulWidget {
   String? deckId;
   String? deckName;
+  DeckPermissions? permissions;
 
-  DeckBuilder({required this.deckId, required this.deckName});
+  DeckBuilder(
+      {required this.deckId,
+      required this.deckName,
+      required this.permissions});
 
   @override
   State<DeckBuilder> createState() => _DeckBuilderState();
@@ -35,25 +40,30 @@ class _DeckBuilderState extends State<DeckBuilder> {
 
   Future _deckLoad(AppStateProvider appState) async {
     return _memoizer.runOnce(() async {
-      final List<Map<String, dynamic>> cards = widget.deckId == null
-          ? []
-          : await Supabase.instance.client
+      Deck deck = Deck(cards: []);
+
+      if (widget.deckId == null) {
+        appState.loadNewDeck();
+      }
+
+      if (mounted) {
+        if (widget.deckId != null) {
+          final List<Map<String, dynamic>> cards = await Supabase
+              .instance.client
               .from('cards')
               .select<List<Map<String, dynamic>>>()
               .eq('deck_id', widget.deckId);
 
-      if (mounted) {
-        final deck = await appState.loadDeck(
-            cards, widget.deckId, widget.deckName, context);
+          deck = await appState.loadDeck(cards, widget.deckId!, widget.deckName,
+              widget.permissions, context);
+        }
 
         setState(() {
           _pageHasLoaded = true;
         });
-
-        return deck;
-      } else {
-        return Deck(cards: []);
       }
+
+      return deck;
     });
   }
 

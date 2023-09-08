@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sky_seal/deck_builder.dart';
 import 'package:sky_seal/structs/Card.dart';
 import 'package:sky_seal/structs/Deck.dart';
+import 'package:sky_seal/view/deck-list-view/DeckPermissions.dart';
 import 'package:sky_seal/view/deck-list-view/deck-preview-card.dart';
 import 'package:sky_seal/view/deck-list-view/deck-preview-metadata.dart';
 import 'package:sky_seal/view/state/app_state_provider.dart';
@@ -43,6 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
               final thisDeck = decks[index];
 
               return DeckPreviewCard(
+                  permissions: DeckPermissions(ownerOfDeck: thisDeck['owner']),
                   deckPreviewMetadata: DeckPreviewMetadata(
                       id: thisDeck['id'],
                       name: thisDeck['name'],
@@ -59,6 +61,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   builder: (context) => DeckBuilder(
                         deckId: null,
                         deckName: null,
+                        permissions: DeckPermissions(
+                            ownerOfDeck: supa
+                                .Supabase.instance.client.auth.currentUser!.id),
                       )));
         },
         label: const Text('New deck'),
