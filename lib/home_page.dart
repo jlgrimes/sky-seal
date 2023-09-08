@@ -47,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   permissions: DeckPermissions(ownerOfDeck: thisDeck['owner']),
                   deckPreviewMetadata: DeckPreviewMetadata(
                       id: thisDeck['id'],
-                      name: thisDeck['name'],
+                      name: thisDeck['name'] ?? 'My deck',
                       featuredCard: thisDeck['featured_card']));
             }),
           );

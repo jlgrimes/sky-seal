@@ -70,7 +70,7 @@ class AppStateProvider extends ChangeNotifier {
       final deckMetadata = await Supabase.instance.client
           .from('decks')
           .select<List<Map<String, dynamic>>>('owner')
-          .eq('deck_id', deckId);
+          .eq('id', deckId);
       deck.permissions = DeckPermissions(ownerOfDeck: deckMetadata[0]['owner']);
     }
 

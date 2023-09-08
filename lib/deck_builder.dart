@@ -43,10 +43,6 @@ class _DeckBuilderState extends State<DeckBuilder> {
     return _memoizer.runOnce(() async {
       Deck deck = Deck(cards: []);
 
-      if (widget.deckId == null) {
-        appState.loadNewDeck();
-      }
-
       if (mounted) {
         if (widget.deckId != null) {
           final List<Map<String, dynamic>> cards = await Supabase
@@ -63,9 +59,9 @@ class _DeckBuilderState extends State<DeckBuilder> {
           _pageHasLoaded = true;
         });
 
-        if (deck.permissions != null) {
+        if (widget.permissions != null) {
           setState(() {
-            _userCanEdit = deck.permissions!.canEdit();
+            _userCanEdit = widget.permissions!.canEdit();
           });
         }
       }
