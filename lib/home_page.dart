@@ -22,6 +22,51 @@ class _MyHomePageState extends State<MyHomePage> {
       .select<List<Map<String, dynamic>>>()
       .eq('owner', supa.Supabase.instance.client.auth.currentUser?.id);
 
+  Future<void> _newDeckDialogBuilder(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('New deck'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DeckBuilder(
+                                  deckId: null,
+                                  deckName: null,
+                                  permissions: DeckPermissions(
+                                      ownerOfDeck: supa.Supabase.instance.client
+                                          .auth.currentUser!.id),
+                                )));
+                  },
+                  child: Card(
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('From scratch',
+                              style: Theme.of(context).textTheme.headlineSmall),
+                          Text('Start with no cards')
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     AppStateProvider appState =
@@ -55,16 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => DeckBuilder(
-                        deckId: null,
-                        deckName: null,
-                        permissions: DeckPermissions(
-                            ownerOfDeck: supa
-                                .Supabase.instance.client.auth.currentUser!.id),
-                      )));
+          _newDeckDialogBuilder(context);
         },
         label: const Text('New deck'),
         icon: const Icon(Icons.add),
