@@ -17,11 +17,13 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class DeckBuilder extends StatefulWidget {
   String? deckId;
   String? deckName;
+  String? deckList;
   DeckPermissions? permissions;
 
   DeckBuilder(
       {required this.deckId,
       required this.deckName,
+      required this.deckList,
       required this.permissions});
 
   @override

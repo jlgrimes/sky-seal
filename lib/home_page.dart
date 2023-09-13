@@ -39,6 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             builder: (context) => DeckBuilder(
                                   deckId: null,
                                   deckName: null,
+                                  deckList: null,
                                   permissions: DeckPermissions(
                                       ownerOfDeck: supa.Supabase.instance.client
                                           .auth.currentUser!.id),

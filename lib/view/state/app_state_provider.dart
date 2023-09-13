@@ -102,6 +102,21 @@ class AppStateProvider extends ChangeNotifier {
             ownerOfDeck: Supabase.instance.client.auth.currentUser!.id));
   }
 
+  loadDeckFromList(String deckList) async {
+    deckList.split('\n').forEach((line) {
+      final isGenericCard =
+          RegExp(r'^\d+(\+\d)* [a-zA-Z ]* [a-zA-Z]{3} \d+(\+\d)*$');
+      final isPromo =
+          RegExp(r'^\d+(\+\d)* [a-zA-Z ]* PR-[a-zA-Z]{2} \d+(\+\d)*$');
+
+      final isPtcgLiveEnergy =
+          RegExp(r'^\d+(\+\d)* [a-zA-Z{} ]* (Energy)[a-zA-Z ]*.*$');
+      final isNormalEnergy = RegExp(r'^\d+(\+\d)* [a-zA-Z ]* (Energy)$');
+
+      if (isGenericCard) {}
+    });
+  }
+
   getFeaturedCard() {
     final List<String> rarityOrder = [
       "Common",
@@ -143,10 +158,13 @@ class AppStateProvider extends ChangeNotifier {
       if (a.supertype != 'Pokémon') return 1;
       if (b.supertype != 'Pokémon') return -1;
 
-      if (rarityOrder.indexOf(a.rarity) < rarityOrder.indexOf(b.rarity)) {
+      if (a.rarity == null) return 1;
+      if (b.rarity == null) return 1;
+
+      if (rarityOrder.indexOf(a.rarity!) < rarityOrder.indexOf(b.rarity!)) {
         return 1;
       }
-      if (rarityOrder.indexOf(a.rarity) > rarityOrder.indexOf(b.rarity)) {
+      if (rarityOrder.indexOf(a.rarity!) > rarityOrder.indexOf(b.rarity!)) {
         return -1;
       }
 
