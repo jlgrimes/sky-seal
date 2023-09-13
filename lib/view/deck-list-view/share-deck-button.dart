@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:sky_seal/view/state/app_state_provider.dart';
+import 'package:concealed/view/state/app_state_provider.dart';
 
 class ShareDeckButton extends StatelessWidget {
   @override
@@ -12,8 +12,8 @@ class ShareDeckButton extends StatelessWidget {
 
     return IconButton(
         onPressed: () {
-          _dialogBuilder(
-              context, 'https://skyseal.app/${appState.deck.id.toString()}');
+          _dialogBuilder(context,
+              'https://concealed.cards/${appState.deck.id.toString()}');
           // Share.share(
           //     'https://skyseal.app/${appState.deck.id.toString()}');
         },

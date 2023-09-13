@@ -4,12 +4,12 @@ import 'package:after_layout/after_layout.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sky_seal/structs/Card.dart';
-import 'package:sky_seal/view/card-view/card_animator.dart';
-import 'package:sky_seal/view/card-view/constants.dart';
-import 'package:sky_seal/view/card-view/whoop_card_view_overlay.dart';
-import 'package:sky_seal/view/primatives/card_view.dart';
-import 'package:sky_seal/view/state/app_state_provider.dart';
+import 'package:concealed/structs/Card.dart';
+import 'package:concealed/view/card-view/card_animator.dart';
+import 'package:concealed/view/card-view/constants.dart';
+import 'package:concealed/view/card-view/whoop_card_view_overlay.dart';
+import 'package:concealed/view/primatives/card_view.dart';
+import 'package:concealed/view/state/app_state_provider.dart';
 
 class CardStackViewOverlay extends StatefulWidget {
   final PokemonCard card;

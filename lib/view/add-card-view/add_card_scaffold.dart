@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:sky_seal/structs/Card.dart';
+import 'package:concealed/structs/Card.dart';
 import 'dart:async';
 
-import 'package:sky_seal/view/add-card-view/CardPreview.dart';
-import 'package:sky_seal/view/primatives/constants.dart';
+import 'package:concealed/view/add-card-view/CardPreview.dart';
+import 'package:concealed/view/primatives/constants.dart';
 
 class AddCardScaffold extends StatefulWidget {
   final Function(PokemonCard card) addCardCallback;

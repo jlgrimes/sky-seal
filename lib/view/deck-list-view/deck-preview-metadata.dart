@@ -1,4 +1,4 @@
-import 'package:sky_seal/util/sets.dart';
+import 'package:concealed/util/sets.dart';
 
 class DeckPreviewMetadata {
   String id;

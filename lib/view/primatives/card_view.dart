@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sky_seal/util/sets.dart';
+import 'package:concealed/util/sets.dart';
 
 class CardView extends StatelessWidget {
   String code;

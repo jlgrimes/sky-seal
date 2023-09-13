@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sky_seal/structs/Card.dart';
-import 'package:sky_seal/structs/Deck.dart';
-import 'package:sky_seal/view/deck-list-view/DeckPermissions.dart';
-import 'package:sky_seal/view/state/card_positioning_state.dart';
+import 'package:concealed/structs/Card.dart';
+import 'package:concealed/structs/Deck.dart';
+import 'package:concealed/view/deck-list-view/DeckPermissions.dart';
+import 'package:concealed/view/state/card_positioning_state.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 enum DeckViewState {

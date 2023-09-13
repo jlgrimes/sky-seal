@@ -1,6 +1,6 @@
 // Proves everything you need to open and run a deck.
-import 'package:sky_seal/structs/Card.dart';
-import 'package:sky_seal/view/deck-list-view/DeckPermissions.dart';
+import 'package:concealed/structs/Card.dart';
+import 'package:concealed/view/deck-list-view/DeckPermissions.dart';
 
 class Deck {
   String? id;

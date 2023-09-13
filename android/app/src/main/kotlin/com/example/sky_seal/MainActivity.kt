@@ -1,4 +1,4 @@
-package com.melon.sky_seal
+package com.melon.concealed
 
 import io.flutter.embedding.android.FlutterActivity
 

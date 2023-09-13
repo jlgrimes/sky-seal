@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sky_seal/deck_builder.dart';
-import 'package:sky_seal/view/deck-list-view/DeckPermissions.dart';
-import 'package:sky_seal/view/deck-list-view/deck-preview-metadata.dart';
-import 'package:sky_seal/view/state/app_state_provider.dart';
+import 'package:concealed/deck_builder.dart';
+import 'package:concealed/view/deck-list-view/DeckPermissions.dart';
+import 'package:concealed/view/deck-list-view/deck-preview-metadata.dart';
+import 'package:concealed/view/state/app_state_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supa;
 
 class DeckPreviewCard extends StatelessWidget {

@@ -4,14 +4,14 @@ import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart' as provider;
 import 'package:share_plus/share_plus.dart';
-import 'package:sky_seal/structs/Deck.dart';
-import 'package:sky_seal/view/add-card-view/add_card_scaffold.dart';
-import 'package:sky_seal/view/deck-list-view/DeckPermissions.dart';
-import 'package:sky_seal/view/deck-list-view/deck-preview-metadata.dart';
-import 'package:sky_seal/view/deck-list-view/edit-deck-button.dart';
-import 'package:sky_seal/view/deck-list-view/share-deck-button.dart';
-import 'package:sky_seal/view/deck-view/deck_view.dart';
-import 'package:sky_seal/view/state/app_state_provider.dart';
+import 'package:concealed/structs/Deck.dart';
+import 'package:concealed/view/add-card-view/add_card_scaffold.dart';
+import 'package:concealed/view/deck-list-view/DeckPermissions.dart';
+import 'package:concealed/view/deck-list-view/deck-preview-metadata.dart';
+import 'package:concealed/view/deck-list-view/edit-deck-button.dart';
+import 'package:concealed/view/deck-list-view/share-deck-button.dart';
+import 'package:concealed/view/deck-view/deck_view.dart';
+import 'package:concealed/view/state/app_state_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DeckBuilder extends StatefulWidget {

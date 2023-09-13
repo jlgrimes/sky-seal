@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sky_seal/view/card-view/constants.dart';
+import 'package:concealed/view/card-view/constants.dart';
 
 enum CardAnimationType { enter, exit }
 

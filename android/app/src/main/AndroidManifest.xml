@@ -2,7 +2,7 @@
     <!-- Required to fetch data from the internet. -->
     <uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:label="Sky Seal"
+        android:label="Concealed"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
@@ -21,8 +21,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="http" />
                 <data android:scheme="https" />
-                <data android:host="skyseal.app" />
-                <data android:host="www.skyseal.app" />
+                <data android:host="concealed.cards" />
+                <data android:host="www.concealed.cards" />
             </intent-filter>
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user

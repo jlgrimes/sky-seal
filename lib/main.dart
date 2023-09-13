@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:sky_seal/auth_controller.dart';
-import 'package:sky_seal/deck_builder.dart';
-import 'package:sky_seal/home_page.dart';
-import 'package:sky_seal/signed_out_screen.dart';
-import 'package:sky_seal/view/state/app_state_provider.dart';
+import 'package:concealed/auth_controller.dart';
+import 'package:concealed/deck_builder.dart';
+import 'package:concealed/home_page.dart';
+import 'package:concealed/signed_out_screen.dart';
+import 'package:concealed/view/state/app_state_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {

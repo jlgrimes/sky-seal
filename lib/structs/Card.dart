@@ -1,6 +1,6 @@
 // Everything the app needs to know about a card.
 import 'package:flutter/material.dart';
-import 'package:sky_seal/util/sets.dart';
+import 'package:concealed/util/sets.dart';
 
 class PokemonCard {
   int? id;

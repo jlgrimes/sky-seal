@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:sky_seal/view/state/app_state_provider.dart';
+import 'package:concealed/view/state/app_state_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supa;
 
 class EditDeckButton extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sky_seal/view/card-view/card_animator.dart';
+import 'package:concealed/view/card-view/card_animator.dart';
 
 class WhoopCardViewOverlay extends StatelessWidget {
   final Widget child;

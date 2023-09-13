@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sky_seal/structs/Card.dart';
-import 'package:sky_seal/view/primatives/card_view.dart';
+import 'package:concealed/structs/Card.dart';
+import 'package:concealed/view/primatives/card_view.dart';
 
 class CardViewWithCount extends StatelessWidget {
   PokemonCard pokemonCard;
