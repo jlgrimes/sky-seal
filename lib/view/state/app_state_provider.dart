@@ -61,8 +61,8 @@ class AppStateProvider extends ChangeNotifier {
       DeckPermissions? deckPermissions, BuildContext context) async {
     // Should be a more generic check but whatcha gonna do
 
-    deck.id ??= deckId;
-    if (deck.name == null && deckName != null) deck.name = deckName;
+    deck.id = deckId;
+    if (deckName != null) deck.name = deckName;
 
     if (deckPermissions != null) {
       deck.permissions = deckPermissions;
@@ -96,10 +96,10 @@ class AppStateProvider extends ChangeNotifier {
 
   loadNewDeck() {
     deck = Deck(
+        name: 'New deck',
         cards: [],
         permissions: DeckPermissions(
             ownerOfDeck: Supabase.instance.client.auth.currentUser!.id));
-    notifyListeners();
   }
 
   getFeaturedCard() {

@@ -53,6 +53,8 @@ class _DeckBuilderState extends State<DeckBuilder> {
 
           deck = await appState.loadDeck(cards, widget.deckId!, widget.deckName,
               widget.permissions, context);
+        } else {
+          appState.loadNewDeck();
         }
 
         setState(() {
