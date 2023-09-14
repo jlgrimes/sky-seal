@@ -18,11 +18,13 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class DeckBuilder extends StatefulWidget {
   String? deckId;
   String? deckName;
+  String? deckList;
   DeckPermissions? permissions;
 
   DeckBuilder(
       {required this.deckId,
       required this.deckName,
+      this.deckList,
       required this.permissions});
 
   @override
@@ -50,42 +52,44 @@ class _DeckBuilderState extends State<DeckBuilder> {
   Future _deckLoad(AppStateProvider appState) async {
     return _memoizer.runOnce(() async {
       Deck deck = Deck(cards: []);
+      if (!mounted) return deck;
 
-      if (mounted) {
-        if (widget.deckId != null) {
-          if (widget.deckId!.length == 11) {
-            final List<Map<String, dynamic>> frozenDeckEntry = await Supabase
-                .instance.client
-                .from('frozen decks')
-                .select<List<Map<String, dynamic>>>()
-                .eq('id', widget.deckId);
+      if (widget.deckList != null) {
+      } else {}
 
-            // TODO: Invalid deck list check
-            final String list = frozenDeckEntry[0]['deck_list'];
-            final List<FrozenCard> parsedList = jsonDecode(list);
-          } else {
-            final List<Map<String, dynamic>> cards = await Supabase
-                .instance.client
-                .from('cards')
-                .select<List<Map<String, dynamic>>>()
-                .eq('deck_id', widget.deckId);
+      if (widget.deckId != null) {
+        if (widget.deckId!.length == 11) {
+          final List<Map<String, dynamic>> frozenDeckEntry = await Supabase
+              .instance.client
+              .from('frozen decks')
+              .select<List<Map<String, dynamic>>>()
+              .eq('id', widget.deckId);
 
-            deck = await appState.loadDeck(cards, widget.deckId!,
-                widget.deckName, widget.permissions, context);
-          }
+          // TODO: Invalid deck list check
+          final String list = frozenDeckEntry[0]['deck_list'];
+          final List<FrozenCard> parsedList = jsonDecode(list);
         } else {
-          appState.loadNewDeck();
-        }
+          final List<Map<String, dynamic>> cards = await Supabase
+              .instance.client
+              .from('cards')
+              .select<List<Map<String, dynamic>>>()
+              .eq('deck_id', widget.deckId);
 
+          deck = await appState.loadDeck(cards, widget.deckId!, widget.deckName,
+              widget.permissions, context);
+        }
+      } else {
+        appState.loadNewDeck();
+      }
+
+      setState(() {
+        _pageHasLoaded = true;
+      });
+
+      if (widget.permissions != null) {
         setState(() {
-          _pageHasLoaded = true;
+          _userCanEdit = widget.permissions!.canEdit();
         });
-
-        if (widget.permissions != null) {
-          setState(() {
-            _userCanEdit = widget.permissions!.canEdit();
-          });
-        }
       }
 
       return deck;

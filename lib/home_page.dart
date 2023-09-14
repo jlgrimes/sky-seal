@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:concealed/deck_builder.dart';
 import 'package:concealed/structs/Card.dart';
@@ -54,6 +55,63 @@ class _MyHomePageState extends State<MyHomePage> {
                           Text('From scratch',
                               style: Theme.of(context).textTheme.headlineSmall),
                           Text('Start with no cards')
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    final list = await Clipboard.getData('text/plain');
+
+                    if (list?.text == null) {
+                      const snackBar = SnackBar(
+                        content: Text('Nothing in your clipboard!'),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      return;
+                    }
+
+                    RegExp validCardRegex = RegExp(
+                        r"^(\d+(?:\+\d)*) ([a-zA-Z{}\-\' ]*) ([a-zA-Z]{3}) (\d+(?:\+\d)*)$");
+                    for (final line in list!.text!.split('\n')) {
+                      debugPrint(line);
+                    }
+                    if (!list!.text!.contains('\n') ||
+                        !list.text!.split('\n').any((element) {
+                          debugPrint(element);
+                          return validCardRegex.hasMatch(element);
+                        })) {
+                      const snackBar = SnackBar(
+                        content: Text(
+                            'Your clipboard does not contain a valid decklist!'),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      return;
+                    }
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DeckBuilder(
+                                  deckId: null,
+                                  deckName: null,
+                                  permissions: DeckPermissions(
+                                      ownerOfDeck: supa.Supabase.instance.client
+                                          .auth.currentUser!.id),
+                                  deckList: list!.text,
+                                )));
+                  },
+                  child: Card(
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Import list',
+                              style: Theme.of(context).textTheme.headlineSmall),
+                          Text('Import deck list from clipboard')
                         ],
                       ),
                     ),
