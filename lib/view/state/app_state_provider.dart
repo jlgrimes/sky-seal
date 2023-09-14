@@ -1,3 +1,4 @@
+import 'package:concealed/deck_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:concealed/structs/Card.dart';
 import 'package:concealed/structs/Deck.dart';
@@ -94,27 +95,24 @@ class AppStateProvider extends ChangeNotifier {
     return deck;
   }
 
+  loadDeckFromList(List<FrozenCard> list) {
+    final cardList = list
+        .map((e) => PokemonCard(
+            code: e.code, count: e.count, supertype: null, rarity: null))
+        .toList();
+
+    deck.cards = cardList;
+
+    hasUnsavedChanges = false;
+    notifyListeners();
+  }
+
   loadNewDeck() {
     deck = Deck(
         name: 'New deck',
         cards: [],
         permissions: DeckPermissions(
             ownerOfDeck: Supabase.instance.client.auth.currentUser!.id));
-  }
-
-  loadDeckFromList(String deckList) async {
-    deckList.split('\n').forEach((line) {
-      final isGenericCard =
-          RegExp(r'^\d+(\+\d)* [a-zA-Z ]* [a-zA-Z]{3} \d+(\+\d)*$');
-      final isPromo =
-          RegExp(r'^\d+(\+\d)* [a-zA-Z ]* PR-[a-zA-Z]{2} \d+(\+\d)*$');
-
-      final isPtcgLiveEnergy =
-          RegExp(r'^\d+(\+\d)* [a-zA-Z{} ]* (Energy)[a-zA-Z ]*.*$');
-      final isNormalEnergy = RegExp(r'^\d+(\+\d)* [a-zA-Z ]* (Energy)$');
-
-      if (isGenericCard) {}
-    });
   }
 
   getFeaturedCard() {
