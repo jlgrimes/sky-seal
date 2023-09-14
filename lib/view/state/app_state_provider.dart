@@ -98,7 +98,7 @@ class AppStateProvider extends ChangeNotifier {
     return deck;
   }
 
-  loadDeckFromList(String list) async {
+  loadDeckFromList(String list, BuildContext context) async {
     final listLength = utf8.encode(list).length.toString();
 
     var headers = {'Content-Type': 'application/json'};
@@ -125,6 +125,10 @@ class AppStateProvider extends ChangeNotifier {
           .toList();
 
       deck.cards = cardList;
+
+      for (var card in deck.cards) {
+        await card.preloadImage(context);
+      }
 
       hasUnsavedChanges = false;
       notifyListeners();

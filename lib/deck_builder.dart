@@ -55,7 +55,7 @@ class _DeckBuilderState extends State<DeckBuilder> {
       if (!mounted) return deck;
 
       if (widget.deckList != null) {
-        deck = await appState.loadDeckFromList(widget.deckList!);
+        deck = await appState.loadDeckFromList(widget.deckList!, context);
       } else {
         if (widget.deckId != null) {
           if (widget.deckId!.length == 11) {

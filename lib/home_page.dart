@@ -28,7 +28,6 @@ class _MyHomePageState extends State<MyHomePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('New deck'),
           content: SingleChildScrollView(
             child: Column(
               children: [
