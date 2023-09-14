@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:concealed/deck_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:concealed/structs/Card.dart';
@@ -5,6 +7,7 @@ import 'package:concealed/structs/Deck.dart';
 import 'package:concealed/view/deck-list-view/DeckPermissions.dart';
 import 'package:concealed/view/state/card_positioning_state.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:http/http.dart' as http;
 
 enum DeckViewState {
   noCardsFocused,
@@ -95,16 +98,41 @@ class AppStateProvider extends ChangeNotifier {
     return deck;
   }
 
-  loadDeckFromList(List<FrozenCard> list) {
-    final cardList = list
-        .map((e) => PokemonCard(
-            code: e.code, count: e.count, supertype: null, rarity: null))
-        .toList();
+  loadDeckFromList(String list) async {
+    final listLength = utf8.encode(list).length.toString();
 
-    deck.cards = cardList;
+    var headers = {'Content-Type': 'application/json'};
+    var request =
+        http.Request('POST', Uri.parse('https://www.concealed.cards/api/list'));
+    request.body = list;
+    // request.body =
+    //     '''Pokémon: 9\r\n2 Frigibax PAL 57\r\n3 Chien-Pao ex PAL 61\r\n1 Lumineon V BRS 40\r\n1 Frigibax PAL 58\r\n2 Pidgeot ex OBF 164\r\n2 Pidgey OBF 162\r\n3 Baxcalibur PAL 60\r\n1 Radiant Greninja ASR 46\r\n1 Manaphy BRS 41\r\n\r\nTrainer: 15\r\n1 Hisuian Heavy Ball ASR 146\r\n3 Ultra Ball ROS 93\r\n3 Skaters\' Park FST 242\r\n2 Nest Ball SUM 123\r\n1 Escape Rope PRC 127\r\n1 Energy Retrieval SVI 171\r\n4 Irida ASR 147\r\n4 Superior Energy Retrieval PLF 103\r\n4 Battle VIP Pass FST 225\r\n3 Boss\'s Orders PAL 172\r\n1 Iono PAL 185\r\n1 Cynthia\'s Ambition BRS 138\r\n1 Lost Vacuum LOR 162\r\n1 Canceling Cologne ASR 136\r\n4 Rare Candy SVI 191\r\n\r\nEnergy: 1\r\n10 Basic {W} Energy SVE 3\r\n\r\nTotal Cards: 60''';
+    request.headers.addAll(headers);
 
-    hasUnsavedChanges = false;
-    notifyListeners();
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      final String res = await response.stream.bytesToString();
+      final Map<String, dynamic> json = jsonDecode(res);
+      final List<dynamic> cards = json['cards'];
+
+      final cardList = cards
+          .map((e) => PokemonCard(
+              code: e['code'],
+              count: e['count'],
+              supertype: null,
+              rarity: null))
+          .toList();
+
+      deck.cards = cardList;
+
+      hasUnsavedChanges = false;
+      notifyListeners();
+    } else {
+      debugPrint(response.reasonPhrase);
+    }
+
+    return deck;
   }
 
   loadNewDeck() {
