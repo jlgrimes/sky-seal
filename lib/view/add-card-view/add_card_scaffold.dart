@@ -64,6 +64,7 @@ class _AddCardScaffoldState extends State<AddCardScaffold> {
             code: card['id'],
             supertype:
                 card.containsKey('supertype') ? card['supertype'] : '_invalid',
+            subtype: card.containsKey('subtype') ? card['subtype'] : '_invalid',
             rarity: card.containsKey('rarity') ? card['rarity'] : '_invalid',
             count: 1))
         .toList();

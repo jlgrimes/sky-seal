@@ -84,6 +84,7 @@ class AppStateProvider extends ChangeNotifier {
             code: e['code'],
             count: e['count'],
             supertype: e['supertype'],
+            subtype: e['subtype'],
             rarity: e['rarity']))
         .toList();
     deck.cards = cardList;
@@ -121,6 +122,7 @@ class AppStateProvider extends ChangeNotifier {
               code: e['code'],
               count: e['count'],
               supertype: null,
+              subtype: null,
               rarity: null))
           .toList();
 

@@ -7,6 +7,7 @@ class PokemonCard {
   // Numerical. Ex sm12-12. Set name hyphen set num.
   String code;
   String? supertype;
+  String? subtype;
   String? rarity;
   int count;
   late Image image;
@@ -15,6 +16,7 @@ class PokemonCard {
       {this.id,
       required this.code,
       required this.supertype,
+      required this.subtype,
       required this.rarity,
       required this.count}) {
     image = Image.network(convertSetCodeToImageUrl(code));
