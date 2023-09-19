@@ -121,9 +121,9 @@ class AppStateProvider extends ChangeNotifier {
           .map((e) => PokemonCard(
               code: e['code'],
               count: e['count'],
-              supertype: null,
-              subtype: null,
-              rarity: null))
+              supertype: e['supertype'],
+              subtype: e['subtype'],
+              rarity: e['rarity']))
           .toList();
 
       deck.cards = cardList;
@@ -245,7 +245,8 @@ class AppStateProvider extends ChangeNotifier {
             'count': element.count,
             'deck_id': deckId,
             'rarity': element.rarity,
-            'supertype': element.supertype
+            'supertype': element.supertype,
+            'subtype': element.subtype,
           });
         } else {
           cardsToBeUpserted.add({
@@ -254,7 +255,8 @@ class AppStateProvider extends ChangeNotifier {
             'count': element.count,
             'deck_id': deckId,
             'rarity': element.rarity,
-            'supertype': element.supertype
+            'supertype': element.supertype,
+            'subtype': element.subtype,
           });
         }
       });
