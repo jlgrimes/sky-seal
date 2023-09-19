@@ -191,7 +191,10 @@ class AppStateProvider extends ChangeNotifier {
       if (b.supertype != 'Pokémon') return -1;
 
       if (a.rarity == null) return 1;
-      if (b.rarity == null) return 1;
+      if (b.rarity == null) return -1;
+
+      if (a.count > b.count) return -1;
+      if (a.count < b.count) return 1;
 
       if (rarityOrder.indexOf(a.rarity!) < rarityOrder.indexOf(b.rarity!)) {
         return 1;
