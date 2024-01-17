@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "10007324611",
+    "project_id": "sky-seal",
+    "storage_bucket": "sky-seal.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:10007324611:android:0c73936878f8f09c323f76",
+        "android_client_info": {
+          "package_name": "com.melon.concealed"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "10007324611-gv64ljopkuos9mq18rj005e6d120t02i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.melon.concealed",
+            "certificate_hash": "bee46789186625f29b8249650a4cb90fada4996f"
+          }
+        },
+        {
+          "client_id": "10007324611-d75282u1mb1gmvchotsph99jubcrb9nf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFUbQzXV4MMHovSn8niOe_lMYFbWYV5Jo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "10007324611-d75282u1mb1gmvchotsph99jubcrb9nf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "10007324611-3q3j2p3m76jguirophir91d7vrgtagcp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.melon.skyseal"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
